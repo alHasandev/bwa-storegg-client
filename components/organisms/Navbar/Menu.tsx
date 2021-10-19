@@ -11,16 +11,16 @@ function Menu(props: Partial<MenuProps>) {
   const { title, active, href = '/' } = props;
   const classTitle = cx({
     'nav-link': true,
-    'active': active,
-  })
+    active,
+  });
 
   return (
     <li className="nav-item my-auto">
-      <Link href={href} >
+      <Link href={href}>
         <a className={classTitle} aria-current="page">{title}</a>
       </Link>
     </li>
-  )
+  );
 }
 
-export default Menu
+export default Menu;
