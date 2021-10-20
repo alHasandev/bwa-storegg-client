@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-interface GameItemProps {
+export interface GameItemProps {
   imgSrc: string;
   title: string;
   category: 'Mobile' | 'Desktop' | 'Web';

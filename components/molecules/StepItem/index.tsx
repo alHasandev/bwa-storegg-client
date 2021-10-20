@@ -1,4 +1,4 @@
-interface StepItemProps {
+export interface StepItemProps {
   iconSrc: string;
   title: string;
   description: string[];
