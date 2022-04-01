@@ -15,11 +15,13 @@
   "dependencies": {
     "@types/aos": "^3.0.4",
     "aos": "^2.3.4",
+    "axios": "^0.26.1",
     "classnames": "^2.3.1",
     "next": "11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "sharp": "^0.30.3"
+    "sharp": "^0.30.3",
+    "swr": "^1.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

@@ -1,6 +1,35 @@
+/* eslint-disable no-underscore-dangle */
+import useSWR from 'swr';
+import axios from 'axios';
+
 import GameItem from '../../molecules/GameItem';
 
+const API_URL = 'https://bwa-storeg-server.herokuapp.com';
+const IMAGE_URL = 'https://bwa-storeg-server.herokuapp.com/uploads';
+
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
+type TCategory = {
+  _id: string;
+  name: 'Mobile' | 'Desktop' | 'Web';
+};
+
+type TVoucher = {
+  _id: string;
+  category: TCategory;
+  name: string;
+  thumbnail: string;
+};
+
 function FeaturedGame() {
+  const {
+    data: { data },
+    error,
+  } = useSWR(`${API_URL}/api/v1/players/landing`, fetcher);
+
+  if (!data) return <div>Loading...</div>;
+  if (error) return <div>Error!</div>;
+
   return (
     <section className="featured-game pt-50 pb-50">
       <div className="container-fluid">
@@ -13,11 +42,14 @@ function FeaturedGame() {
           className="d-flex flex-row flex-lg-wrap overflow-setting justify-content-lg-between gap-lg-3 gap-4"
           data-aos="fade-up"
         >
-          <GameItem imgSrc="/img/Thumbnail-1.png" title="Super Mechs" category="Mobile" />
-          <GameItem imgSrc="/img/Thumbnail-2.png" title="Call of Duty: Modern" category="Mobile" />
-          <GameItem imgSrc="/img/Thumbnail-3.png" title="Mobile Legends" category="Mobile" />
-          <GameItem imgSrc="/img/Thumbnail-4.png" title="Clash of Clans" category="Mobile" />
-          <GameItem imgSrc="/img/Thumbnail-5.png" title="Valorant" category="Desktop" />
+          {data.map((game: TVoucher) => (
+            <GameItem
+              key={game._id}
+              imgSrc={`${IMAGE_URL}/${game.thumbnail}`}
+              title={game.name}
+              category={game.category.name}
+            />
+          ))}
         </div>
       </div>
     </section>
