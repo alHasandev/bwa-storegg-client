@@ -1,31 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-import useSWR from 'swr';
-import axios from 'axios';
 
+import { IMAGE_URL } from '../../../services';
+import { TVoucher, useFeaturedGame } from '../../../services/players';
 import GameItem from '../../molecules/GameItem';
 
-const API_URL = 'https://bwa-storeg-server.herokuapp.com';
-const IMAGE_URL = 'https://bwa-storeg-server.herokuapp.com/uploads';
-
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-
-type TCategory = {
-  _id: string;
-  name: 'Mobile' | 'Desktop' | 'Web';
-};
-
-type TVoucher = {
-  _id: string;
-  category: TCategory;
-  name: string;
-  thumbnail: string;
-};
-
 function FeaturedGame() {
-  const {
-    data: { data },
-    error,
-  } = useSWR(`${API_URL}/api/v1/players/landing`, fetcher);
+  const { data, error } = useFeaturedGame();
 
   if (!data) return <div>Loading...</div>;
   if (error) return <div>Error!</div>;
@@ -42,7 +22,7 @@ function FeaturedGame() {
           className="d-flex flex-row flex-lg-wrap overflow-setting justify-content-lg-between gap-lg-3 gap-4"
           data-aos="fade-up"
         >
-          {data.map((game: TVoucher) => (
+          {data?.data.map((game: TVoucher) => (
             <GameItem
               key={game._id}
               imgSrc={`${IMAGE_URL}/${game.thumbnail}`}
