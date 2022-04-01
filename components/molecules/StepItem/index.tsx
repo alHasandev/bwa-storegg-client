@@ -11,21 +11,22 @@ function StepItem(props: StepItemProps) {
   return (
     <div className="col-lg-4">
       <div className="card feature-card border-0">
-        <img src={iconSrc} className="mb-4" width={80} height={80} alt="icon step" />
+        <img
+          src={iconSrc}
+          className="mb-4"
+          width={80}
+          height={80}
+          alt="icon step"
+        />
         <p className="fw-semibold text-2xl mb-2 color-palette-1">{title}</p>
-        <p className="text-lg color-palette-1 mb-0">
+        <div className="text-lg color-palette-1 mb-0">
           {description.map((desc, i) => {
             if (i < pargCount) {
-              return (
-                <>
-                  {desc}
-                  <br />
-                </>
-              );
+              return <p key={`${desc}`}>{desc}</p>;
             }
             return desc;
           })}
-        </p>
+        </div>
       </div>
     </div>
   );
