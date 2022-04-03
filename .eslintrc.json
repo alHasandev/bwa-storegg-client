@@ -5,7 +5,7 @@
   },
   "extends": [
     "plugin:react/recommended",
-    "airbnb",
+    "airbnb", 
     "plugin:react/jsx-runtime"
   ],
   "globals": {

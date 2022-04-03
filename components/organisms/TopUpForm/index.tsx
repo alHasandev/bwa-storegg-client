@@ -1,11 +1,29 @@
+/* eslint-disable function-paren-newline */
+/* eslint-disable comma-dangle */
+/* eslint-disable implicit-arrow-linebreak */
 import Link from 'next/link';
+import { TNominal, TBank } from '../../../services/players';
 
-function TopUpForm() {
+import NominalItem from '../../molecules/NominalItem';
+import PaymentItem from '../../molecules/PaymentItem';
+
+type TopUpFormProps = {
+  nominals: TNominal[];
+  payments: {
+    type: string;
+    banks: TBank[];
+  }[];
+};
+
+function TopUpForm({ nominals, payments }: TopUpFormProps) {
   return (
     <form action="./checkout.html" method="POST">
       <div className="pt-md-50 pt-30">
         <div className="">
-          <label htmlFor="ID" className="form-label text-lg fw-medium color-palette-1 mb-10">
+          <label
+            htmlFor="ID"
+            className="form-label text-lg fw-medium color-palette-1 mb-10"
+          >
             Verify ID
           </label>
           <input
@@ -19,175 +37,48 @@ function TopUpForm() {
         </div>
       </div>
       <div className="pt-md-50 pb-md-50 pt-30 pb-20">
-        <p className="text-lg fw-medium color-palette-1 mb-md-10 mb-0">Nominal Top Up</p>
+        <p className="text-lg fw-medium color-palette-1 mb-md-10 mb-0">
+          Nominal Top Up
+        </p>
         <div className="row justify-content-between">
-          <label
-            className="col-lg-4 col-sm-6 ps-md-15 pe-md-15 pt-md-15 pb-md-15 pt-10 pb-10"
-            htmlFor="topup1"
-          >
-            <input className="d-none" type="radio" id="topup1" name="topup" value="topup1" />
-            <div className="detail-card">
-              <div className="d-flex justify-content-between">
-                <p className="text-3xl color-palette-1 m-0">
-                  <span className="fw-medium">125</span>
-                  Gold
-                </p>
-                <img
-                  src="./icon/check.svg"
-                  className="icon-check"
-                  width={20}
-                  height={20}
-                  alt="icon-check"
-                />
-              </div>
-              <p className="text-lg color-palette-1 m-0">Rp 3.250.000</p>
-            </div>
-          </label>
-          <label
-            className="col-lg-4 col-sm-6 ps-md-15 pe-md-15 pt-md-15 pb-md-15 pt-10 pb-10"
-            htmlFor="topup2"
-          >
-            <input className="d-none" type="radio" id="topup2" name="topup" value="topup2" />
-            <div className="detail-card">
-              <div className="d-flex justify-content-between">
-                <p className="text-3xl color-palette-1 m-0">
-                  <span className="fw-medium">225</span>
-                  Gold
-                </p>
-                <img
-                  src="./icon/check.svg"
-                  className="icon-check"
-                  width={20}
-                  height={20}
-                  alt="icon-check"
-                />
-              </div>
-              <p className="text-lg color-palette-1 m-0">Rp 3.250.000</p>
-            </div>
-          </label>
-          <label
-            className="col-lg-4 col-sm-6 ps-md-15 pe-md-15 pt-md-15 pb-md-15 pt-10 pb-10"
-            htmlFor="topup3"
-          >
-            <input className="d-none" type="radio" id="topup3" name="topup" value="topup3" />
-            <div className="detail-card">
-              <div className="d-flex justify-content-between">
-                <p className="text-3xl color-palette-1 m-0">
-                  <span className="fw-medium">350</span>
-                  Gold
-                </p>
-                <img
-                  src="./icon/check.svg"
-                  className="icon-check"
-                  width={20}
-                  height={20}
-                  alt="icon-check"
-                />
-              </div>
-              <p className="text-lg color-palette-1 m-0">Rp 3.250.000</p>
-            </div>
-          </label>
-          <label
-            className="col-lg-4 col-sm-6 ps-md-15 pe-md-15 pt-md-15 pb-md-15 pt-10 pb-10"
-            htmlFor="topup4"
-          >
-            <input className="d-none" type="radio" id="topup4" name="topup" value="topup4" />
-            <div className="detail-card">
-              <div className="d-flex justify-content-between">
-                <p className="text-3xl color-palette-1 m-0">
-                  <span className="fw-medium">550</span>
-                  Gold
-                </p>
-                <img
-                  src="./icon/check.svg"
-                  className="icon-check"
-                  width={20}
-                  height={20}
-                  alt="icon-check"
-                />
-              </div>
-              <p className="text-lg color-palette-1 m-0">Rp 3.250.000</p>
-            </div>
-          </label>
-          <label
-            className="col-lg-4 col-sm-6 ps-md-15 pe-md-15 pt-md-15 pb-md-15 pt-10 pb-10"
-            htmlFor="topup5"
-          >
-            <input className="d-none" type="radio" id="topup5" name="topup" value="topup5" />
-            <div className="detail-card">
-              <div className="d-flex justify-content-between">
-                <p className="text-3xl color-palette-1 m-0">
-                  <span className="fw-medium">750</span>
-                  Gold
-                </p>
-                <img
-                  src="./icon/check.svg"
-                  className="icon-check"
-                  width={20}
-                  height={20}
-                  alt="icon-check"
-                />
-              </div>
-              <p className="text-lg color-palette-1 m-0">Rp 3.250.000</p>
-            </div>
-          </label>
+          {nominals.map((nominal) => (
+            <NominalItem
+              key={nominal._id}
+              id={nominal._id}
+              coinQuantity={nominal.coinQuantity}
+              coinName={nominal.coinName}
+              price={nominal.price}
+            />
+          ))}
           <div className="col-lg-4 col-sm-6">{/* <!-- Blank --> */}</div>
         </div>
       </div>
       <div className="pb-md-50 pb-20">
-        <p className="text-lg fw-medium color-palette-1 mb-md-10 mb-0">Payment Method</p>
+        <p className="text-lg fw-medium color-palette-1 mb-md-10 mb-0">
+          Payment Method
+        </p>
         <fieldset id="paymentMethod">
           <div className="row justify-content-between">
-            <label
-              className="col-lg-4 col-sm-6 ps-md-15 pe-md-15 pt-md-15 pb-md-15 pt-10 pb-10"
-              htmlFor="transfer"
-            >
-              <input
-                className="d-none"
-                type="radio"
-                id="transfer"
-                name="paymentMethod"
-                value="transfer"
-              />
-              <div className="detail-card">
-                <div className="d-flex justify-content-between">
-                  <p className="text-3xl color-palette-1 fw-medium m-0">Transfer</p>
-                  <img
-                    src="./icon/check.svg"
-                    className="icon-check"
-                    width={20}
-                    height={20}
-                    alt="icon-check"
-                  />
-                </div>
-                <p className="text-lg color-palette-1 m-0">Worldwide Available</p>
-              </div>
-            </label>
-            <label
-              className="col-lg-4 col-sm-6 ps-md-15 pe-md-15 pt-md-15 pb-md-15 pt-10 pb-10"
-              htmlFor="visa"
-            >
-              <input className="d-none" type="radio" id="visa" name="paymentMethod" value="visa" />
-              <div className="detail-card">
-                <div className="d-flex justify-content-between">
-                  <p className="text-3xl color-palette-1 fw-medium m-0">VISA</p>
-                  <img
-                    src="./icon/check.svg"
-                    className="icon-check"
-                    width={20}
-                    height={20}
-                    alt="icon-check"
-                  />
-                </div>
-                <p className="text-lg color-palette-1 m-0">Credit Card</p>
-              </div>
-            </label>
+            {payments.map(({ type, banks }) =>
+              banks.map((bank) => (
+                <PaymentItem
+                  type={type}
+                  _id={bank._id}
+                  bankName={bank.bankName}
+                  noRekening={bank.noRekening}
+                  name={bank.name}
+                />
+              ))
+            )}
             <div className="col-lg-4 col-sm-6">{/* <!-- Blank --> */}</div>
           </div>
         </fieldset>
       </div>
       <div className="pb-50">
-        <label htmlFor="bankAccount" className="form-label text-lg fw-medium color-palette-1 mb-10">
+        <label
+          htmlFor="bankAccount"
+          className="form-label text-lg fw-medium color-palette-1 mb-10"
+        >
           Bank Account Name
         </label>
         <input

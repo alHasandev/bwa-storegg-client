@@ -24,6 +24,7 @@ function FeaturedGame() {
         >
           {data?.data.map((game: TVoucher) => (
             <GameItem
+              id={game._id}
               key={game._id}
               imgSrc={`${IMAGE_URL}/${game.thumbnail}`}
               title={game.name}

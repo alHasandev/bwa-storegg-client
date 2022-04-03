@@ -14,4 +14,18 @@ export type TVoucher = {
   thumbnail: string;
 };
 
+export type TNominal = {
+  _id: string;
+  coinQuantity: number;
+  coinName: string;
+  price: number;
+};
+
+export type TBank = {
+  _id: string;
+  bankName: string;
+  noRekening: string;
+  name: string;
+};
+
 export const useFeaturedGame = () => useAPI(`${route}/landing`);
