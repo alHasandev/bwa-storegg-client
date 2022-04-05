@@ -50,3 +50,12 @@
     }
 
 /*  */
+
+.preview-image {
+  display: inline-flex;
+  border-radius: 100%;
+  overflow: hidden;
+  position: relative;
+  height: 120px;
+  width: 120px;
+}
