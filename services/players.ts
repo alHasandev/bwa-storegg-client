@@ -1,6 +1,6 @@
 import useAPI from '.';
 
-const route = 'players';
+const route = '/players';
 
 export type TCategory = {
   _id: string;
@@ -27,5 +27,7 @@ export type TBank = {
   noRekening: string;
   name: string;
 };
+
+export const useCategories = () => useAPI(`${route}/categories`);
 
 export const useFeaturedGame = () => useAPI(`${route}/landing`);
