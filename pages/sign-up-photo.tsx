@@ -5,17 +5,29 @@
 import { useState } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
+
 import useLocalStorage from '../hooks/useLocalStorage';
 import { TCategory, useCategories } from '../services/players';
 import createObjectURL from '../utilities/file/createObjectURL';
 import { authSignUp } from '../services/auth';
+import { ValidatorError } from '../services/type';
+import throttle from '../utilities/delay/throttle';
+// import debounce from '../utilities/delay/debounce';
+
+const throttleToastError = throttle((message) => {
+  toast.error(message);
+}, 1000);
 
 const SignUpPhoto: NextPage = () => {
+  const router = useRouter();
   const [favoriteGame, setFavoriteGame] = useState('');
   const [previewImage, setPreviewImage] = useState<string>('/icon/upload.svg');
   const [imageFile, setImageFile] = useState<Blob | string>('');
   const { data, error } = useCategories();
-  const { localValue } = useLocalStorage('signup-data', '');
+  const { localValue, saveLocalValue } = useLocalStorage('signup-data', '');
 
   if (!data) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
@@ -33,8 +45,36 @@ const SignUpPhoto: NextPage = () => {
     formData.append('favorite', favoriteGame || data.data?.[0]._id);
 
     authSignUp(formData)
-      .then((response) => console.log('response', response))
-      .catch((err) => console.error(err));
+      .then(() => {
+        // Show success popup notification
+        toast.success('Akun anda berhasil terdaftar');
+
+        // remove password from local storage
+        saveLocalValue((value: any) => {
+          const remainFormData = { ...value };
+          delete remainFormData.password;
+          return remainFormData;
+        });
+
+        setTimeout(() => {
+          router.push('/sign-up-success');
+        }, 3000);
+      })
+      .catch(({ response: { status, data: errorData } }) => {
+        if (status !== 422) return toast(`${status}: Sign Up Error!`);
+
+        const errorFields: ValidatorError[] = Object.values(errorData.fields);
+
+        setTimeout(() => {
+          router.push('/sign-up');
+        }, 5000);
+
+        return errorFields.map(({ path, message }) => {
+          const alertMessage = `Mohon maaf ${path} ${message} 🙏`;
+          throttleToastError(alertMessage);
+          return alertMessage;
+        });
+      });
   };
   const chooseFavoriteGame = (_id: string) => {
     setFavoriteGame(_id);
@@ -42,6 +82,8 @@ const SignUpPhoto: NextPage = () => {
 
   return (
     <section className="sign-up-photo mx-auto pt-lg-100 pb-lg-100 pt-60 pb-10">
+      {/* Alert error */}
+      <ToastContainer />
       <div className="container mx-auto">
         <form action="">
           <div className="form-input d-md-block d-flex flex-column">

@@ -9,7 +9,7 @@ import '../styles/complete-checkout.css';
 import '../styles/sign-in.css';
 import '../styles/sign-up.css';
 import '../styles/sign-up-photo.css';
-import '../styles/sign-up-photo-success.css';
+import '../styles/sign-up-success.css';
 import '../styles/404-not-found.css';
 import '../styles/sidebar.css';
 import '../styles/overview.css';
@@ -47,7 +47,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
 
         {/* AOS Animation */}
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+        <link
+          href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+          rel="stylesheet"
+        />
       </Head>
       <Component {...pageProps} />
     </>
