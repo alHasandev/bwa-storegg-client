@@ -5,11 +5,7 @@ import Link from 'next/link';
 import { TPlayer } from '../../../services/players';
 import { IMAGE_URL } from '../../../services';
 import useLogout from '../../../hooks/useLogout';
-
-type JwtData = {
-  iat: number;
-  player: TPlayer;
-};
+import { JwtData } from '../../../services/auth';
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(false);
