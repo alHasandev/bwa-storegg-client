@@ -8,7 +8,7 @@ import useAPI from '../../services';
 
 const Detail: NextPage = () => {
   const { query, isReady } = useRouter();
-  const { data, error } = useAPI(isReady ? `players/detail/${query._id}` : '');
+  const { data, error } = useAPI(isReady ? `/players/detail/${query._id}` : '');
 
   if (!data) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
