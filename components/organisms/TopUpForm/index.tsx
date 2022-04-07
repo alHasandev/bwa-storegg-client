@@ -62,6 +62,7 @@ function TopUpForm({ nominals, payments }: TopUpFormProps) {
             {payments.map(({ type, banks }) =>
               banks.map((bank) => (
                 <PaymentItem
+                  key={bank._id}
                   type={type}
                   _id={bank._id}
                   bankName={bank.bankName}
