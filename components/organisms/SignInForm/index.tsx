@@ -1,12 +1,57 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { FormEvent } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import useFormData from '../../../hooks/useFormData';
+import { UserError } from '../../../services';
+import { authSignIn } from '../../../services/auth';
 
 function SignInForm() {
+  const router = useRouter();
+  const {
+    formData: { email, password },
+    changeFormValue,
+  } = useFormData({
+    email: '',
+    password: '',
+  });
+
+  const submitForm = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      console.table({ email, password });
+      if (!email && !password) {
+        throw new UserError(400, 'Email dan Password wajib di isi!');
+      }
+
+      const { data } = await authSignIn({ email, password });
+      // set jwt token to local storage
+      localStorage.setItem('token', data.token);
+      toast.success('Berhasil login');
+      setTimeout(() => {
+        router.push('/member');
+      }, 3000);
+    } catch (error: any) {
+      const { status, message } = error;
+      console.log('erorr response', status, message);
+      toast.error(message || 'Error Login!');
+    }
+  };
+
   return (
-    <>
+    <form onSubmit={(e) => submitForm(e)}>
+      <ToastContainer />
       <h2 className="text-4xl fw-bold color-palette-1 mb-10">Sign In</h2>
-      <p className="text-lg color-palette-1 m-0">Masuk untuk melakukan proses top up</p>
+      <p className="text-lg color-palette-1 m-0">
+        Masuk untuk melakukan proses top up
+      </p>
       <div className="pt-50">
-        <label htmlFor="email" className="form-label text-lg fw-medium color-palette-1 mb-10">
+        <label
+          htmlFor="email"
+          className="form-label text-lg fw-medium color-palette-1 mb-10"
+        >
           Email Address
         </label>
         <input
@@ -16,10 +61,15 @@ function SignInForm() {
           name="email"
           aria-describedby="email"
           placeholder="Enter your email address"
+          value={email}
+          onChange={changeFormValue}
         />
       </div>
       <div className="pt-30">
-        <label htmlFor="password" className="form-label text-lg fw-medium color-palette-1 mb-10">
+        <label
+          htmlFor="password"
+          className="form-label text-lg fw-medium color-palette-1 mb-10"
+        >
           Password
         </label>
         <input
@@ -29,17 +79,17 @@ function SignInForm() {
           name="password"
           aria-describedby="password"
           placeholder="Your password"
+          value={password}
+          onChange={changeFormValue}
         />
       </div>
       <div className="button-group d-flex flex-column mx-auto pt-50">
-        <Link href="/">
-          <a
-            className="btn btn-sign-in fw-medium text-lg text-white rounded-pill mb-16"
-            role="button"
-          >
-            Continue to Sign In
-          </a>
-        </Link>
+        <button
+          type="submit"
+          className="btn btn-sign-in fw-medium text-lg text-white rounded-pill mb-16"
+        >
+          Continue to Sign In
+        </button>
         <Link href="/sign-up">
           <a
             className="btn btn-sign-up fw-medium text-lg color-palette-1 rounded-pill"
@@ -49,7 +99,7 @@ function SignInForm() {
           </a>
         </Link>
       </div>
-    </>
+    </form>
   );
 }
 
