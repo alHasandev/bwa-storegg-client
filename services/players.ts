@@ -2,6 +2,15 @@ import useAPI from '.';
 
 const route = '/players';
 
+export type TPlayer = {
+  avatar: string;
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+};
+
 export type TCategory = {
   _id: string;
   name: 'Mobile' | 'Desktop' | 'Web';

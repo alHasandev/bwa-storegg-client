@@ -1,3 +1,4 @@
+import useLogout from '../../../hooks/useLogout';
 import Footer from './Footer';
 import MenuItem from './MenuItem';
 import Profile from './Profile';
@@ -8,6 +9,7 @@ interface SidebarProps {
 
 function Sidebar(props: SidebarProps) {
   const { activeMenu } = props;
+  const logout = useLogout('/');
 
   return (
     <section className="sidebar">
@@ -26,16 +28,32 @@ function Sidebar(props: SidebarProps) {
             title="Transactions"
             active={activeMenu === 'transactions'}
           />
-          <MenuItem link="/member/massages" iconSrc="/icon/menu-massages.svg" title="Massages" />
-          <MenuItem link="/member/card" iconSrc="/icon/menu-card.svg" title="Card" />
-          <MenuItem link="/member/rewards" iconSrc="/icon/menu-rewards.svg" title="Rewards" />
+          <MenuItem
+            link="/member/massages"
+            iconSrc="/icon/menu-massages.svg"
+            title="Massages"
+          />
+          <MenuItem
+            link="/member/card"
+            iconSrc="/icon/menu-card.svg"
+            title="Card"
+          />
+          <MenuItem
+            link="/member/rewards"
+            iconSrc="/icon/menu-rewards.svg"
+            title="Rewards"
+          />
           <MenuItem
             link="/member/edit-profile"
             iconSrc="/icon/menu-settings.svg"
             title="Settings"
             active={activeMenu === 'settings'}
           />
-          <MenuItem link="/sign-in" iconSrc="/icon/menu-logout.svg" title="Log Out" />
+          <MenuItem
+            onClick={() => logout()}
+            iconSrc="/icon/menu-logout.svg"
+            title="Log Out"
+          />
         </div>
         <Footer />
       </div>

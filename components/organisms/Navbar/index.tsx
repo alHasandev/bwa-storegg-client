@@ -19,7 +19,7 @@ function Navbar() {
               <Menu title="Rewards" href="/rewards" />
               <Menu title="Discover" href="/discover" />
               <Menu title="Global Rank" href="/global-rank" />
-              <Auth isLogin />
+              <Auth />
             </ul>
           </div>
         </div>

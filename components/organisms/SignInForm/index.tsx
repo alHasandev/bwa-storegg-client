@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { FormEvent } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 
 import useFormData from '../../../hooks/useFormData';
 import { UserError } from '../../../services';
@@ -27,11 +28,13 @@ function SignInForm() {
       }
 
       const { data } = await authSignIn({ email, password });
-      // set jwt token to local storage
-      localStorage.setItem('token', data.token);
+      // Process jwt token
+      // const buf = Buffer.from(data.token, 'base64');
+      const tokenBase64 = btoa(data.token);
+      Cookies.set('token', tokenBase64, { expires: 1 });
       toast.success('Berhasil login');
       setTimeout(() => {
-        router.push('/member');
+        router.push('/');
       }, 3000);
     } catch (error: any) {
       const { status, message } = error;

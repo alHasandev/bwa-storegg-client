@@ -1,13 +1,51 @@
+import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import jwtDecode from 'jwt-decode';
 import Link from 'next/link';
+import { TPlayer } from '../../../services/players';
+import { IMAGE_URL } from '../../../services';
+import useLogout from '../../../hooks/useLogout';
 
-interface AuthProps {
-  isLogin?: boolean;
-}
+type JwtData = {
+  iat: number;
+  player: TPlayer;
+};
 
-function Auth(props: Partial<AuthProps>) {
-  const { isLogin } = props;
+function Auth() {
+  const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState<TPlayer | null>(null);
 
-  if (isLogin) {
+  const logout = useLogout('/');
+
+  const logoutUser = () => {
+    logout().then(() => {
+      setIsLogin(false);
+      setUser(null);
+    });
+  };
+
+  useEffect(() => {
+    try {
+      const token = Cookies.get('token');
+      if (!token) throw new Error('User is not authenticated');
+
+      const jwtToken = atob(token ?? '');
+      const payload: JwtData = jwtDecode(jwtToken);
+
+      const player = payload?.player;
+
+      if (!player) throw new Error('Authentication token is corupted!');
+
+      setIsLogin(true);
+      setUser(player);
+    } catch (error) {
+      setIsLogin(false);
+    }
+
+    // if(!!user)
+  }, []);
+
+  if (isLogin && !!user) {
     return (
       <li className="nav-item my-auto dropdown d-flex">
         <div className="vertical-line d-lg-block d-none" />
@@ -20,13 +58,24 @@ function Auth(props: Partial<AuthProps>) {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <img src="/img/avatar-1.png" className="rounded-circle" width="40" height="40" alt="" />
+            <img
+              src={`${IMAGE_URL}/${user.avatar}`}
+              className="rounded-circle"
+              width="40"
+              height="40"
+              alt=""
+            />
           </a>
 
-          <ul className="dropdown-menu border-0" aria-labelledby="dropdownMenuLink">
+          <ul
+            className="dropdown-menu border-0"
+            aria-labelledby="dropdownMenuLink"
+          >
             <li>
               <Link href="/member/">
-                <a className="dropdown-item text-lg color-palette-2">My Profile</a>
+                <a className="dropdown-item text-lg color-palette-2">
+                  My Profile
+                </a>
               </Link>
             </li>
             <li>
@@ -36,13 +85,19 @@ function Auth(props: Partial<AuthProps>) {
             </li>
             <li>
               <Link href="/member/edit-profile">
-                <a className="dropdown-item text-lg color-palette-2">Account Settings</a>
+                <a className="dropdown-item text-lg color-palette-2">
+                  Account Settings
+                </a>
               </Link>
             </li>
             <li>
-              <Link href="/sign-in">
-                <a className="dropdown-item text-lg color-palette-2">Log Out</a>
-              </Link>
+              <button
+                type="button"
+                className="dropdown-item text-lg color-palette-2"
+                onClick={() => logoutUser()}
+              >
+                Log Out
+              </button>
             </li>
           </ul>
         </div>
