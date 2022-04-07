@@ -5,3 +5,10 @@ export type ValidatorError = {
   path: string;
   value: string;
 };
+
+export type RequestError = {
+  status: number;
+  data: any;
+  message: string;
+  type: 'error' | 'warning';
+};
