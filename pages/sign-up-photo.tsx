@@ -13,7 +13,7 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import { TCategory, useCategories } from '../services/players';
 import createObjectURL from '../utilities/file/createObjectURL';
 import { authSignUp } from '../services/auth';
-import { ValidatorError } from '../services/type';
+import { RequestError, ValidatorError } from '../services/type';
 import throttle from '../utilities/delay/throttle';
 // import debounce from '../utilities/delay/debounce';
 
@@ -60,17 +60,17 @@ const SignUpPhoto: NextPage = () => {
           router.push('/sign-up-success');
         }, 3000);
       })
-      .catch(({ response: { status, data: errorData } }) => {
+      .catch(({ status, data: dataFields }: RequestError) => {
         if (status !== 422) return toast(`${status}: Sign Up Error!`);
 
-        const errorFields: ValidatorError[] = Object.values(errorData.fields);
+        const errorFields: ValidatorError[] = Object.values(dataFields.fields);
 
         setTimeout(() => {
           router.push('/sign-up');
         }, 5000);
 
-        return errorFields.map(({ path, message }) => {
-          const alertMessage = `Mohon maaf ${path} ${message} 🙏`;
+        return errorFields.map((field) => {
+          const alertMessage = `Mohon maaf ${field.path} ${field.message} 🙏`;
           throttleToastError(alertMessage);
           return alertMessage;
         });
