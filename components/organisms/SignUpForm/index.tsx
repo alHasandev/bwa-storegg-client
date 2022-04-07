@@ -5,6 +5,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import useLocalStorage from '../../../hooks/useLocalStorage';
 
@@ -30,6 +32,9 @@ function SignUpForm() {
 
   const nextForm = (link: string) => {
     // Save signup data to local storage
+    if (!name && !username && !email && !password && !phoneNumber) {
+      return toast.warning('Semua field harus di isi!');
+    }
     saveLocalValue({
       name,
       username,
@@ -39,11 +44,12 @@ function SignUpForm() {
     });
 
     // Redirect to {link}
-    router.push(link);
+    return router.push(link);
   };
 
   return (
     <>
+      <ToastContainer />
       <h2 className="text-4xl fw-bold color-palette-1 mb-10">Sign Up</h2>
       <p className="text-lg color-palette-1 m-0">
         Daftar dan bergabung dengan kami
