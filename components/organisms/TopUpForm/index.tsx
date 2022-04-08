@@ -3,7 +3,7 @@
 /* eslint-disable implicit-arrow-linebreak */
 import { useRouter } from 'next/router';
 import { FormEventHandler, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useFormData from '../../../hooks/useFormData';
 import { TNominal, TBank } from '../../../services/players';
@@ -70,7 +70,6 @@ function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
 
   return (
     <form action="./checkout.html" method="POST" onSubmit={onSubmit}>
-      <ToastContainer />
       <div className="pt-md-50 pt-30">
         <div className="">
           <label

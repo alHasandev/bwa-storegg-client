@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FormEvent } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
 
@@ -45,7 +45,6 @@ function SignInForm() {
 
   return (
     <form onSubmit={(e) => submitForm(e)}>
-      <ToastContainer />
       <h2 className="text-4xl fw-bold color-palette-1 mb-10">Sign In</h2>
       <p className="text-lg color-palette-1 m-0">
         Masuk untuk melakukan proses top up

@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 
@@ -83,7 +83,6 @@ const SignUpPhoto: NextPage = () => {
   return (
     <section className="sign-up-photo mx-auto pt-lg-100 pb-lg-100 pt-60 pb-10">
       {/* Alert error */}
-      <ToastContainer />
       <div className="container mx-auto">
         <form action="">
           <div className="form-input d-md-block d-flex flex-column">

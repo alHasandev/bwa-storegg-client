@@ -5,8 +5,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 import useLocalStorage from '../../../hooks/useLocalStorage';
 
@@ -49,7 +48,6 @@ function SignUpForm() {
 
   return (
     <>
-      <ToastContainer />
       <h2 className="text-4xl fw-bold color-palette-1 mb-10">Sign Up</h2>
       <p className="text-lg color-palette-1 m-0">
         Daftar dan bergabung dengan kami
