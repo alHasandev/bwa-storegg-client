@@ -1,7 +1,9 @@
-import type { NextPage } from 'next';
+import jwtDecode from 'jwt-decode';
+import type { GetServerSideProps, NextPage } from 'next';
 import CheckoutConfirmation from '../components/organisms/CheckoutConfirmation';
 import CheckoutDetails from '../components/organisms/CheckoutDetails';
 import CheckoutItem from '../components/organisms/CheckoutItem';
+import { JwtData } from '../services/auth';
 
 const Checkout: NextPage = () => (
   <section className="checkout mx-auto pt-md-100 pb-md-145 pt-30 pb-30">
@@ -26,3 +28,30 @@ const Checkout: NextPage = () => (
 );
 
 export default Checkout;
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  try {
+    const { token } = req.cookies;
+
+    if (!token) throw new Error('Silahkan login terlebih dahulu!');
+
+    const { player: user }: JwtData = jwtDecode(
+      Buffer.from(token, 'base64').toString('ascii')
+    );
+
+    if (!user) throw new Error('Silahkan login terlebih dahulu!');
+
+    return {
+      props: {
+        user,
+      },
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/sign-in',
+        permanent: false,
+      },
+    };
+  }
+};
