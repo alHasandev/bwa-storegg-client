@@ -21,14 +21,14 @@ const getSavedValue: GetJSON = (
   return initialValue;
 };
 
-export default function useLocalStorage(
+export default function useLocalStorage<T>(
   key: string,
-  initialValue: InitialValue | any
+  initialValue?: InitialValue | any
 ) {
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState<T>(initialValue);
 
   useEffect(() => {
-    setValue(() => getSavedValue(key, initialValue ?? ''));
+    setValue(() => getSavedValue(key, initialValue));
   }, []);
 
   useEffect(() => {
