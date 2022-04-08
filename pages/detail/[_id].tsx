@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/dist/client/router';
+
 import Footer from '../../components/organisms/Footer';
 import Navbar from '../../components/organisms/Navbar';
 import TopUpForm from '../../components/organisms/TopUpForm';
@@ -35,6 +36,7 @@ const Detail: NextPage = () => {
               <TopUpItem data={data.data} type="desktop" />
               <hr />
               <TopUpForm
+                voucher={query?._id?.toString() || ''}
                 nominals={data.data?.nominals}
                 payments={data.data?.payments}
               />

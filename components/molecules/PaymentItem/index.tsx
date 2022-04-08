@@ -1,16 +1,24 @@
+/* eslint-disable no-unused-vars */
 import { TBank } from '../../../services/players';
 
 type PaymentItemProps = {
   type: string;
+  onChecked?: (value: string) => void;
 } & TBank;
 
-const PaymentItem = ({ type, _id: bankID, bankName }: PaymentItemProps) => (
+const PaymentItem = ({
+  type,
+  _id: bankID,
+  bankName,
+  onChecked,
+}: PaymentItemProps) => (
   <label className="col-lg-4 col-sm-6 ps-md-15 pe-md-15 pt-md-15 pb-md-15 pt-10 pb-10">
     <input
       className="d-none"
       type="radio"
       name="paymentMethod"
       value={bankID}
+      onChange={(event) => onChecked?.(event.target.value)}
     />
     <div className="detail-card">
       <div className="d-flex justify-content-between">
@@ -27,5 +35,9 @@ const PaymentItem = ({ type, _id: bankID, bankName }: PaymentItemProps) => (
     </div>
   </label>
 );
+
+PaymentItem.defaultProps = {
+  onChecked: (id: string) => {},
+};
 
 export default PaymentItem;

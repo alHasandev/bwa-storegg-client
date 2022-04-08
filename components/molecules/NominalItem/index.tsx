@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+import { ChangeEvent } from 'react';
 import rupiah from '../../../utilities/Intl/rupiah';
 
 /* eslint-disable object-curly-newline */
@@ -6,11 +8,24 @@ type NominalProps = {
   coinQuantity: number;
   coinName: string;
   price: number;
+  onChecked?: (value: string) => void;
 };
 
-const Nominal = ({ id, coinQuantity, coinName, price }: NominalProps) => (
+const Nominal = ({
+  id,
+  coinQuantity,
+  coinName,
+  price,
+  onChecked,
+}: NominalProps) => (
   <label className="col-lg-4 col-sm-6 ps-md-15 pe-md-15 pt-md-15 pb-md-15 pt-10 pb-10">
-    <input className="d-none" type="radio" name="topup" value={id} />
+    <input
+      className="d-none"
+      type="radio"
+      name="topup"
+      value={id}
+      onChange={(e) => onChecked?.(e.target.value)}
+    />
     <div className="detail-card">
       <div className="d-flex justify-content-between">
         <p className="text-3xl color-palette-1 m-0">
@@ -29,5 +44,9 @@ const Nominal = ({ id, coinQuantity, coinName, price }: NominalProps) => (
     </div>
   </label>
 );
+
+Nominal.defaultProps = {
+  onChecked: (id: string) => {},
+};
 
 export default Nominal;

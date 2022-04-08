@@ -3,6 +3,7 @@ import useAPI from '.';
 const route = '/players';
 
 export type TPlayer = {
+  _id: string;
   avatar: string;
   name: string;
   username: string;
