@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable operator-linebreak */
 /* eslint-disable comma-dangle */
 /* eslint-disable react/jsx-curly-newline */
@@ -17,6 +18,14 @@ import { RequestError, ValidatorError } from '../services/type';
 import throttle from '../utilities/delay/throttle';
 // import debounce from '../utilities/delay/debounce';
 
+type SignUpData = {
+  name: string;
+  username: string;
+  email: string;
+  password?: string;
+  phoneNumber: string;
+};
+
 const throttleToastError = throttle((message) => {
   toast.error(message);
 }, 1000);
@@ -27,7 +36,8 @@ const SignUpPhoto: NextPage = () => {
   const [previewImage, setPreviewImage] = useState<string>('/icon/upload.svg');
   const [imageFile, setImageFile] = useState<Blob | string>('');
   const { data, error } = useCategories();
-  const { localValue, saveLocalValue } = useLocalStorage('signup-data', '');
+  const { localValue, saveLocalValue } =
+    useLocalStorage<SignUpData>('signup-data');
 
   if (!data) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
@@ -38,7 +48,7 @@ const SignUpPhoto: NextPage = () => {
     formData.append('name', localValue.name);
     formData.append('username', localValue.username);
     formData.append('email', localValue.email);
-    formData.append('password', localValue.password);
+    formData.append('password', localValue.password || '');
     formData.append('phoneNumber', localValue.phoneNumber);
 
     // Set favorite game category
@@ -50,11 +60,14 @@ const SignUpPhoto: NextPage = () => {
         toast.success('Akun anda berhasil terdaftar');
 
         // remove password from local storage
-        saveLocalValue((value: any) => {
-          const remainFormData = { ...value };
-          delete remainFormData.password;
-          return remainFormData;
-        });
+        saveLocalValue(
+          ({ name, username, email, phoneNumber }: SignUpData) => ({
+            name,
+            username,
+            email,
+            phoneNumber,
+          })
+        );
 
         setTimeout(() => {
           router.push('/sign-up-success');
