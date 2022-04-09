@@ -41,8 +41,6 @@ const Checkout: NextPage<CheckoutProps> = ({
   const [isConfirmed, setIsConfirmed] = useState(false);
   const { localValue } = useLocalStorage<TopupDetail>('topup-detail');
 
-  console.log('jwtToken', jwtToken);
-
   if (!localValue) return <div>Loading...</div>;
   const { verifyID, bankAccount, voucher, nominal, payment, bank } = localValue;
 
@@ -56,7 +54,6 @@ const Checkout: NextPage<CheckoutProps> = ({
       );
     }
 
-    console.log('🚀 ~ file: checkout.tsx ~ line 32 ~ user', user);
     const checkoutData: CheckoutData = {
       accountUser: verifyID,
       name: user.name,
@@ -65,13 +62,8 @@ const Checkout: NextPage<CheckoutProps> = ({
       payment: payment._id,
       bank: bank._id,
     };
-    console.log(
-      '🚀 ~ file: checkout.tsx ~ line 66 ~ onSubmit ~ checkoutData',
-      checkoutData
-    );
 
-    return postCheckout(checkoutData, jwtToken).then((response) => {
-      console.log('response checkout', response);
+    return postCheckout(checkoutData, jwtToken).then(() => {
       toast('Selamat Anda Topup Berhasil 👍');
       router.push('/complete-checkout');
     });
