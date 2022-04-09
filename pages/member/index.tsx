@@ -1,5 +1,8 @@
+import jwtDecode from 'jwt-decode';
+import { GetServerSideProps } from 'next';
 import OverviewContent from '../../components/organisms/OverviewContent';
 import Sidebar from '../../components/organisms/Sidebar';
+import { JwtData } from '../../services/auth';
 
 function MemberOverview() {
   return (
@@ -11,3 +14,30 @@ function MemberOverview() {
 }
 
 export default MemberOverview;
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  try {
+    const { token } = req.cookies;
+
+    if (!token) throw new Error('Silahkan login terlebih dahulu!');
+
+    const jwtToken = Buffer.from(token, 'base64').toString('ascii');
+    const { player: user }: JwtData = jwtDecode(jwtToken);
+
+    if (!user) throw new Error('Silahkan login terlebih dahulu!');
+
+    return {
+      props: {
+        user,
+        jwtToken,
+      },
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/sign-in',
+        permanent: false,
+      },
+    };
+  }
+};
