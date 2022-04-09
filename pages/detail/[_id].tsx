@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import type { NextPage } from 'next';
 import { useRouter } from 'next/dist/client/router';
 
@@ -6,6 +7,7 @@ import Navbar from '../../components/organisms/Navbar';
 import TopUpForm from '../../components/organisms/TopUpForm';
 import TopUpItem from '../../components/organisms/TopUpItem';
 import useAPI from '../../services';
+import { TVoucher } from '../../services/players';
 
 const Detail: NextPage = () => {
   const { query, isReady } = useRouter();
@@ -13,6 +15,8 @@ const Detail: NextPage = () => {
 
   if (!data) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
+
+  const { _id, name, thumbnail, category }: TVoucher = data?.data;
 
   return (
     <>
@@ -36,7 +40,12 @@ const Detail: NextPage = () => {
               <TopUpItem data={data.data} type="desktop" />
               <hr />
               <TopUpForm
-                voucher={query?._id?.toString() || ''}
+                voucher={{
+                  _id,
+                  name,
+                  thumbnail,
+                  category,
+                }}
                 nominals={data.data?.nominals}
                 payments={data.data?.payments}
               />

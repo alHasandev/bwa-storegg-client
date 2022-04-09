@@ -1,31 +1,116 @@
+/* eslint-disable object-curly-newline */
 import jwtDecode from 'jwt-decode';
 import type { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { FormEvent, useState } from 'react';
+import { toast } from 'react-toastify';
 import CheckoutConfirmation from '../components/organisms/CheckoutConfirmation';
 import CheckoutDetails from '../components/organisms/CheckoutDetails';
 import CheckoutItem from '../components/organisms/CheckoutItem';
+import useLocalStorage from '../hooks/useLocalStorage';
 import { JwtData } from '../services/auth';
+import {
+  CheckoutData,
+  postCheckout,
+  TBank,
+  TNominal,
+  TPayment,
+  TPlayer,
+  TVoucher,
+} from '../services/players';
 
-const Checkout: NextPage = () => (
-  <section className="checkout mx-auto pt-md-100 pb-md-145 pt-30 pb-30">
-    <div className="container-fluid">
-      <div className="logo text-md-center text-start pb-50">
-        <a className="" href="/#">
-          <img src="/icon/logo.svg" width={60} height={60} alt="logo" />
-        </a>
-      </div>
-      <div className="title-text pt-md-50 pt-0">
-        <h2 className="text-4xl fw-bold color-palette-1 mb-10">Checkout</h2>
-        <p className="text-lg color-palette-1 mb-0">
-          Waktunya meningkatkan cara bermain
-        </p>
-      </div>
-      <CheckoutItem />
-      <hr />
-      <CheckoutDetails />
-      <CheckoutConfirmation />
-    </div>
-  </section>
-);
+type TopupDetail = {
+  verifyID: string;
+  bankAccount: string;
+  voucher: TVoucher;
+  nominal: TNominal;
+  payment: TPayment;
+  bank: TBank;
+};
+
+type CheckoutProps = {
+  user: TPlayer;
+  jwtToken: string;
+};
+
+const Checkout: NextPage<CheckoutProps> = ({
+  user,
+  jwtToken,
+}: CheckoutProps) => {
+  const router = useRouter();
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const { localValue } = useLocalStorage<TopupDetail>('topup-detail');
+
+  console.log('jwtToken', jwtToken);
+
+  if (!localValue) return <div>Loading...</div>;
+  const { verifyID, bankAccount, voucher, nominal, payment, bank } = localValue;
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault();
+
+    // Confirm if 'I have transferred the money' is checked
+    if (!isConfirmed) {
+      return toast.warning(
+        "Tolong centang 'I have transferred the money' sebelum confirmasi pembayaran"
+      );
+    }
+
+    console.log('🚀 ~ file: checkout.tsx ~ line 32 ~ user', user);
+    const checkoutData: CheckoutData = {
+      accountUser: verifyID,
+      name: user.name,
+      nominal: nominal._id,
+      voucher: voucher._id,
+      payment: payment._id,
+      bank: bank._id,
+    };
+    console.log(
+      '🚀 ~ file: checkout.tsx ~ line 66 ~ onSubmit ~ checkoutData',
+      checkoutData
+    );
+
+    return postCheckout(checkoutData, jwtToken).then((response) => {
+      console.log('response checkout', response);
+      toast('Selamat Anda Topup Berhasil 👍');
+      router.push('/complete-checkout');
+    });
+  };
+
+  return (
+    <section className="checkout mx-auto pt-md-100 pb-md-145 pt-30 pb-30">
+      <form className="container-fluid" onSubmit={onSubmit}>
+        <div className="logo text-md-center text-start pb-50">
+          <a className="" href="/#">
+            <img src="/icon/logo.svg" width={60} height={60} alt="logo" />
+          </a>
+        </div>
+        <div className="title-text pt-md-50 pt-0">
+          <h2 className="text-4xl fw-bold color-palette-1 mb-10">Checkout</h2>
+          <p className="text-lg color-palette-1 mb-0">
+            Waktunya meningkatkan cara bermain
+          </p>
+        </div>
+        <CheckoutItem
+          gameName={voucher.name}
+          category={voucher.category.name}
+          thumbnail={voucher.thumbnail}
+        />
+        <hr />
+        <CheckoutDetails
+          verifyID={verifyID}
+          bankAccount={bankAccount}
+          nominal={nominal}
+          payment={payment}
+          bank={bank}
+        />
+        <CheckoutConfirmation
+          onConfirmed={(isChecked) => setIsConfirmed(isChecked)}
+        />
+      </form>
+    </section>
+  );
+};
 
 export default Checkout;
 
@@ -35,15 +120,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
     if (!token) throw new Error('Silahkan login terlebih dahulu!');
 
-    const { player: user }: JwtData = jwtDecode(
-      Buffer.from(token, 'base64').toString('ascii')
-    );
+    const jwtToken = Buffer.from(token, 'base64').toString('ascii');
+    const { player: user }: JwtData = jwtDecode(jwtToken);
 
     if (!user) throw new Error('Silahkan login terlebih dahulu!');
 
     return {
       props: {
         user,
+        jwtToken,
       },
     };
   } catch (error) {

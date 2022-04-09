@@ -1,6 +1,16 @@
-import useAPI from '.';
+/* eslint-disable implicit-arrow-linebreak */
+import useAPI, { postAPI } from '.';
 
 const route = '/players';
+
+export type CheckoutData = {
+  accountUser: string;
+  name: string;
+  nominal: string;
+  voucher: string;
+  payment: string;
+  bank: string;
+};
 
 export type TPlayer = {
   _id: string;
@@ -38,6 +48,19 @@ export type TBank = {
   name: string;
 };
 
+export type TPayment = {
+  _id: string;
+  type: string;
+  banks: TBank[] | string;
+};
+
 export const useCategories = () => useAPI(`${route}/categories`);
 
 export const useFeaturedGame = () => useAPI(`${route}/landing`);
+
+export const postCheckout = (data: CheckoutData, token: string) =>
+  postAPI(`${route}/checkout`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

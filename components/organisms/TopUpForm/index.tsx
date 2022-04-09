@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable function-paren-newline */
 /* eslint-disable comma-dangle */
 /* eslint-disable implicit-arrow-linebreak */
@@ -6,13 +7,13 @@ import { FormEventHandler, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useFormData from '../../../hooks/useFormData';
-import { TNominal, TBank } from '../../../services/players';
+import { TNominal, TBank, TVoucher, TPayment } from '../../../services/players';
 
 import NominalItem from '../../molecules/NominalItem';
 import PaymentItem from '../../molecules/PaymentItem';
 
 type TopUpFormProps = {
-  voucher: string;
+  voucher: TVoucher;
   nominals: TNominal[];
   payments: {
     type: string;
@@ -27,9 +28,9 @@ function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
     verifyID: '',
     bankAccount: '',
   });
-  const [nominal, setNominal] = useState('');
-  const [payment, setPayment] = useState('');
-  const [bankID, setBankID] = useState('');
+  const [nominal, setNominal] = useState<TNominal | null>(null);
+  const [payment, setPayment] = useState<TPayment | null>(null);
+  const [bank, setBank] = useState<TBank | null>(null);
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -37,14 +38,14 @@ function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
       ...formData,
       nominal,
       payment,
-      bank: bankID,
+      bank,
     });
 
     if (!formData.verifyID && !formData.bankAccount) {
       return toast.warning('Silahkan mengisi Verify ID dan bank account');
     }
 
-    if (!nominal && !payment && !bankID) {
+    if (!nominal && !payment && !bank) {
       return toast.warning('Silahkan memilih nominal dan metode pembayaran');
     }
 
@@ -55,7 +56,7 @@ function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
         voucher,
         nominal,
         payment,
-        bank: bankID,
+        bank,
       })
     );
 
@@ -63,9 +64,9 @@ function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
     return router.push('/checkout');
   };
 
-  const setPaymentAndBank = (paymentID: string, bankId: string) => {
-    setPayment(paymentID);
-    setBankID(bankId);
+  const setPaymentAndBank = (paymentData: TPayment, bankData: TBank) => {
+    setPayment(paymentData);
+    setBank(bankData);
   };
 
   return (
@@ -102,7 +103,7 @@ function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
               coinQuantity={nomi.coinQuantity}
               coinName={nomi.coinName}
               price={nomi.price}
-              onChecked={(nominalID) => setNominal(nominalID)}
+              onChecked={() => setNominal(nomi)}
             />
           ))}
           <div className="col-lg-4 col-sm-6">{/* <!-- Blank --> */}</div>
@@ -114,19 +115,20 @@ function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
         </p>
         <fieldset id="paymentMethod">
           <div className="row justify-content-between">
-            {payments.map(({ _id, type, banks }) =>
-              banks.map((bank) => (
+            {payments.map((paymentData) => {
+              const { type, banks } = paymentData;
+              return banks.map((bankData) => (
                 <PaymentItem
-                  key={bank._id}
+                  key={bankData._id}
                   type={type}
-                  _id={bank._id}
-                  bankName={bank.bankName}
-                  noRekening={bank.noRekening}
-                  name={bank.name}
-                  onChecked={(bankId) => setPaymentAndBank(_id, bankId)}
+                  _id={bankData._id}
+                  bankName={bankData.bankName}
+                  noRekening={bankData.noRekening}
+                  name={bankData.name}
+                  onChecked={() => setPaymentAndBank(paymentData, bankData)}
                 />
-              ))
-            )}
+              ));
+            })}
             <div className="col-lg-4 col-sm-6">{/* <!-- Blank --> */}</div>
           </div>
         </fieldset>
