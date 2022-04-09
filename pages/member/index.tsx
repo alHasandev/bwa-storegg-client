@@ -4,11 +4,15 @@ import OverviewContent from '../../components/organisms/OverviewContent';
 import Sidebar from '../../components/organisms/Sidebar';
 import { JwtData } from '../../services/auth';
 
-function MemberOverview() {
+type MemberOverviewProps = {
+  jwtToken: string;
+};
+
+function MemberOverview({ jwtToken }: MemberOverviewProps) {
   return (
     <section className="overview overflow-auto">
       <Sidebar activeMenu="overview" />
-      <OverviewContent />
+      <OverviewContent jwtToken={jwtToken} />
     </section>
   );
 }

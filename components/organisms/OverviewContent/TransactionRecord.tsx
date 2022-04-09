@@ -1,17 +1,6 @@
+/* eslint-disable object-curly-newline */
 import rupiah from '../../../utilities/Intl/rupiah';
-
-type GameProps = {
-  img: string;
-  title: string;
-  category: 'Desktop' | 'Mobile' | 'Other';
-};
-
-interface TransactionRecordProps {
-  game: GameProps;
-  item: string;
-  price: number;
-  status: 'pending' | 'success' | 'failed';
-}
+import { TransactionRecordProps } from './types';
 
 const uppercase = (s: string, i?: number) => {
   if (i) {
@@ -25,9 +14,7 @@ const uppercase = (s: string, i?: number) => {
 };
 
 function TransactionRecord(props: TransactionRecordProps) {
-  const {
-    game, item, price, status,
-  } = props;
+  const { game, item, price, status } = props;
 
   return (
     <tr className="align-middle">
@@ -40,15 +27,21 @@ function TransactionRecord(props: TransactionRecordProps) {
           alt="game thumb"
         />
         <div className="game-title-header">
-          <p className="game-title fw-medium text-start color-palette-1 m-0">{game.title}</p>
-          <p className="text-xs fw-normal text-start color-palette-2 m-0">{game.category}</p>
+          <p className="game-title fw-medium text-start color-palette-1 m-0">
+            {game.title}
+          </p>
+          <p className="text-xs fw-normal text-start color-palette-2 m-0">
+            {game.category}
+          </p>
         </div>
       </th>
       <td>
         <p className="fw-medium color-palette-1 m-0">{item}</p>
       </td>
       <td>
-        <p className="fw-medium text-start color-palette-1 m-0">{rupiah(price)}</p>
+        <p className="fw-medium text-start color-palette-1 m-0">
+          {rupiah(price)}
+        </p>
       </td>
       <td>
         <div>

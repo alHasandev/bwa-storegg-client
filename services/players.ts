@@ -54,9 +54,50 @@ export type TPayment = {
   banks: TBank[] | string;
 };
 
+export type TTotalSpent = {
+  Mobile: number;
+  Desktop: number;
+  Other: number;
+};
+
+export type TTransaction = {
+  _id: string;
+  accountUser: string;
+  category: TCategory;
+  historyPayment: TBank & TPayment;
+  historyUser: { name: string; phoneNumber: string };
+  historyVoucherTopup: {
+    gameName: string;
+    category: 'Mobile' | 'Desktop' | 'Other';
+    thumbnail: string;
+    coinName: string;
+    coinQuantity: number;
+    price: number;
+  };
+  name: string;
+  player: string;
+  status: 'pending' | 'success' | 'failed';
+  tax: number;
+  value: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TDashboard = {
+  totalSpent: TTotalSpent;
+  transactions: TTransaction[];
+};
+
 export const useCategories = () => useAPI(`${route}/categories`);
 
 export const useFeaturedGame = () => useAPI(`${route}/landing`);
+
+export const useDashboard = (token: string) =>
+  useAPI(`${route}/dashboard`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
 export const postCheckout = (data: CheckoutData, token: string) =>
   postAPI(`${route}/checkout`, data, {

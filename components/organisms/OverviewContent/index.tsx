@@ -1,35 +1,65 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable object-curly-newline */
+import { IMAGE_URL } from '../../../services';
+import { TDashboard, useDashboard } from '../../../services/players';
 import CategoryCard from './CategoryCard';
 import TransactionRecord from './TransactionRecord';
+import { TransactionRecordProps } from './types';
 
-function OverviewContent() {
+const categoryIcons = {
+  Mobile: '/icon/category-mobile.svg',
+  Desktop: '/icon/category-desktop.svg',
+  Other: '/icon/category-other.svg',
+};
+
+const getCategoryIcon = (category: 'Desktop' | 'Mobile' | string) => {
+  switch (category) {
+    case 'Mobile':
+    case 'Desktop':
+      return categoryIcons[category];
+
+    default:
+      return categoryIcons.Other;
+  }
+};
+
+type OverviewContentProps = {
+  jwtToken: string;
+};
+
+function OverviewContent({ jwtToken }: OverviewContentProps) {
+  const { data, error } = useDashboard(jwtToken);
+
+  if (!data && !error) return <div>Loading...</div>;
+  if (error) return <div>Error!, hubungi admin</div>;
+
+  const { transactions }: TDashboard = data;
+
   return (
     <main className="main-wrapper">
       <div className="ps-lg-0">
         <h2 className="text-4xl fw-bold color-palette-1 mb-30">Overview</h2>
         <div className="top-up-categories mb-30">
-          <p className="text-lg fw-medium color-palette-1 mb-14">Top Up Categories</p>
+          <p className="text-lg fw-medium color-palette-1 mb-14">
+            Top Up Categories
+          </p>
           <div className="main-content">
             <div className="row">
-              <CategoryCard
-                title={['Game', 'Desktop']}
-                iconSrc="/icon/category-desktop.svg"
-                nominal={18000500}
-              />
-              <CategoryCard
-                title={['Game', 'Mobile']}
-                iconSrc="/icon/category-mobile.svg"
-                nominal={8455000}
-              />
-              <CategoryCard
-                title={['Other', 'Categories']}
-                iconSrc="/icon/category-other.svg"
-                nominal={5000000}
-              />
+              {Object.keys(data.totalSpent).map((category: string) => (
+                <CategoryCard
+                  key={category}
+                  title={['Game', category]}
+                  iconSrc={getCategoryIcon(category)}
+                  nominal={data.totalSpent[category]}
+                />
+              ))}
             </div>
           </div>
         </div>
         <div className="latest-transaction">
-          <p className="text-lg fw-medium color-palette-1 mb-14">Latest Transactions</p>
+          <p className="text-lg fw-medium color-palette-1 mb-14">
+            Latest Transactions
+          </p>
           <div className="main-content main-content-table overflow-auto">
             <table className="table table-borderless">
               <thead>
@@ -43,46 +73,29 @@ function OverviewContent() {
                 </tr>
               </thead>
               <tbody>
-                <TransactionRecord
-                  game={{
-                    img: '/img/overview-1.png',
-                    title: 'Mobile Legends: The New Battle 2021',
-                    category: 'Desktop',
-                  }}
-                  item="200 Gold"
-                  price={290000}
-                  status="pending"
-                />
-                <TransactionRecord
-                  game={{
-                    img: '/img/overview-2.png',
-                    title: 'Call of Duty:Modern',
-                    category: 'Desktop',
-                  }}
-                  item="550 Gold"
-                  price={740000}
-                  status="success"
-                />
-                <TransactionRecord
-                  game={{
-                    img: '/img/overview-3.png',
-                    title: 'Clash of Clans',
-                    category: 'Mobile',
-                  }}
-                  item="100 Gold"
-                  price={120000}
-                  status="failed"
-                />
-                <TransactionRecord
-                  game={{
-                    img: '/img/overview-4.png',
-                    title: 'The Royal Game',
-                    category: 'Mobile',
-                  }}
-                  item="225 Gold"
-                  price={200000}
-                  status="pending"
-                />
+                {transactions.map((transaction) => {
+                  const { historyVoucherTopup: gameData } = transaction;
+                  const { game, item, price, status }: TransactionRecordProps =
+                    {
+                      game: {
+                        img: `${IMAGE_URL}/${gameData.thumbnail}`,
+                        title: gameData.gameName,
+                        category: gameData.category,
+                      },
+                      item: `${gameData.coinQuantity} ${gameData.coinName}`,
+                      price: transaction.value,
+                      status: transaction.status,
+                    };
+                  return (
+                    <TransactionRecord
+                      key={transaction._id}
+                      game={game}
+                      item={item}
+                      price={price}
+                      status={status}
+                    />
+                  );
+                })}
               </tbody>
             </table>
           </div>

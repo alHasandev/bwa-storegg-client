@@ -37,8 +37,9 @@ export const postAPI = (
       throw new UserError(status, data?.message || message, data);
     });
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+const fetcher = (url: string, config?: AxiosRequestConfig) =>
+  axios.get(url, config).then((res) => res.data);
 
-export default function useAPI(url: string) {
-  return useSWR(`${API_URL}${url}`, fetcher);
+export default function useAPI(url: string, config?: AxiosRequestConfig) {
+  return useSWR(`${API_URL}${url}`, (_url) => fetcher(_url, config));
 }
