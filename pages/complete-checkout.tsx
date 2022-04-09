@@ -271,9 +271,12 @@ const CompleteCheckout: NextPage = () => (
           </a>
         </Link>
         <a
-          className="btn btn-whatsapp fw-medium text-lg color-palette-1 rounded-pill"
-          href="/#"
           role="button"
+          href="https://wa.me/6282149259826/?text=Saya%20sudah%20melakukan%20pembayaran"
+          rel="noreferrer"
+          target="_blank"
+          referrerPolicy="no-referrer"
+          className="btn btn-whatsapp fw-medium text-lg color-palette-1 rounded-pill"
         >
           WhatsApp ke Admin
         </a>
