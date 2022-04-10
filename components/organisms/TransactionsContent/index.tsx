@@ -112,6 +112,7 @@ function TransactionsContent({ jwtToken }: TransactionsContentProps) {
                   return (
                     <TableRow
                       key={transaction._id}
+                      detailID={transaction._id}
                       game={game}
                       item={item}
                       price={price}

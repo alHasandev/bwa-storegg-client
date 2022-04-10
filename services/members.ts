@@ -33,7 +33,8 @@ export default async function getTransactionDetail(
         },
       }
     );
-    return response.data;
+    const data = await response.data;
+    return data.data;
   } catch (error: any) {
     throw new ServerErrorResponse(error?.response);
   }

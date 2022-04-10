@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import Link from 'next/link';
 import rupiah from '../../../utilities/Intl/rupiah';
 
@@ -12,6 +13,7 @@ interface TableRowProps {
   item: string;
   price: number;
   status: 'pending' | 'success' | 'failed';
+  detailID: string;
 }
 
 const uppercase = (s: string, i?: number) => {
@@ -26,9 +28,7 @@ const uppercase = (s: string, i?: number) => {
 };
 
 function TableRow(props: TableRowProps) {
-  const {
-    game, item, price, status,
-  } = props;
+  const { game, item, price, status, detailID } = props;
 
   return (
     <tr className="align-middle">
@@ -41,15 +41,21 @@ function TableRow(props: TableRowProps) {
           alt="game thumb"
         />
         <div className="game-title-header">
-          <p className="game-title fw-medium text-start color-palette-1 m-0">{game.title}</p>
-          <p className="text-xs fw-normal text-start color-palette-2 m-0">{game.category}</p>
+          <p className="game-title fw-medium text-start color-palette-1 m-0">
+            {game.title}
+          </p>
+          <p className="text-xs fw-normal text-start color-palette-2 m-0">
+            {game.category}
+          </p>
         </div>
       </th>
       <td>
         <p className="fw-medium color-palette-1 m-0">{item}</p>
       </td>
       <td>
-        <p className="fw-medium text-start color-palette-1 m-0">{rupiah(price)}</p>
+        <p className="fw-medium text-start color-palette-1 m-0">
+          {rupiah(price)}
+        </p>
       </td>
       <td>
         <div>
@@ -60,7 +66,7 @@ function TableRow(props: TableRowProps) {
         </div>
       </td>
       <td>
-        <Link href="/member/transactions/detail">
+        <Link href={`/member/transactions/${detailID}`}>
           <a className="btn btn-status rounded-pill text-sm">Details</a>
         </Link>
       </td>
