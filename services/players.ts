@@ -99,6 +99,18 @@ export const useDashboard = (token: string) =>
     },
   });
 
+export const useTransactionsHistory = (
+  token: string,
+  status?: string | null
+) => {
+  const queryURL = status ? `?status=${status}` : '';
+  return useAPI(`${route}/history${queryURL}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const postCheckout = (data: CheckoutData, token: string) =>
   postAPI(`${route}/checkout`, data, {
     headers: {
