@@ -1,28 +1,55 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable object-curly-newline */
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { IMAGE_URL } from '../../../services';
-import { TDashboard, useDashboard } from '../../../services/players';
+import {
+  TTransaction,
+  useTransactionsHistory,
+} from '../../../services/players';
 import rupiah from '../../../utilities/Intl/rupiah';
 import TagButton from '../../atoms/TagButton';
 import { TransactionRecordProps } from '../OverviewContent/types';
 import TableRow from './TableRow';
+
+// Dummy data for filter tag
+const tags = [
+  { filter: '', text: 'All' },
+  { filter: 'success', text: 'Success' },
+  { filter: 'pending', text: 'Pending' },
+  { filter: 'failed', text: 'Failed' },
+];
+
+type TransactionHistory = {
+  data: TTransaction[];
+  totalValue: number;
+};
 
 type TransactionsContentProps = {
   jwtToken: string;
 };
 
 function TransactionsContent({ jwtToken }: TransactionsContentProps) {
-  const { data, error } = useDashboard(jwtToken);
+  const { asPath, isReady } = useRouter();
+
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const { data, error } = useTransactionsHistory(jwtToken, selectedTag);
+
+  useEffect(() => {
+    if (isReady) {
+      const hash = asPath.split('#')[1];
+      if (hash) {
+        setSelectedTag(hash);
+      } else {
+        setSelectedTag('');
+      }
+    }
+  }, [asPath, isReady]);
 
   if (!data && !error) return <div>Loading...</div>;
   if (error) return <div>Error!, hubungi admin</div>;
 
-  const { totalSpent, transactions }: TDashboard = data;
-
-  const transactionsTotal = Object.values(totalSpent).reduce(
-    (prev, current) => prev + current,
-    0
-  );
+  const { data: transactions, totalValue }: TransactionHistory = data;
 
   return (
     <main className="main-wrapper">
@@ -33,16 +60,21 @@ function TransactionsContent({ jwtToken }: TransactionsContentProps) {
         <div className="mb-30">
           <p className="text-lg color-palette-2 mb-12">You’ve spent</p>
           <h3 className="text-5xl fw-medium color-palette-1">
-            {rupiah(transactionsTotal)}
+            {rupiah(totalValue)}
           </h3>
         </div>
         <div className="row mt-30 mb-20">
           <div className="col-lg-12 col-12 main-content">
             <div id="list_status_title">
-              <TagButton filter="*" text="All Trx" active />
-              <TagButton filter="success" text="Success" />
-              <TagButton filter="pending" text="Pending" />
-              <TagButton filter="failed" text="Failed" />
+              {tags.map((tag) => (
+                <TagButton
+                  key={tag.filter}
+                  filter={tag.filter}
+                  text={tag.text}
+                  active={selectedTag === tag.filter}
+                  onClickTag={setSelectedTag}
+                />
+              ))}
             </div>
           </div>
         </div>

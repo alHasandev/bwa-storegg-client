@@ -1,13 +1,16 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable no-unused-vars */
 import cx from 'classnames';
 
 export interface TagButtonProps {
   filter: string;
   text: string;
+  onClickTag: (tagFilter: string) => void;
   active?: boolean;
 }
 
-function TagButton(props: Partial<TagButtonProps>) {
-  const { filter, text, active } = props;
+function TagButton(props: TagButtonProps) {
+  const { filter, text, onClickTag, active } = props;
 
   const classTag = cx({
     'btn btn-status': true,
@@ -17,7 +20,12 @@ function TagButton(props: Partial<TagButtonProps>) {
   });
 
   return (
-    <a data-filter={filter} href="#" className={classTag}>
+    <a
+      data-filter={filter}
+      href={`#${filter}`}
+      className={classTag}
+      onClick={() => onClickTag(filter)}
+    >
       {text}
     </a>
   );
