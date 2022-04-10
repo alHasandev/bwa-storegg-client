@@ -37,6 +37,22 @@ export const postAPI = (
       throw new UserError(status, data?.message || message, data);
     });
 
+export const patchAPI = (
+  url: string,
+  formData: FormData | any,
+  config?: AxiosRequestConfig<FormData> | undefined
+) =>
+  axios
+    .patch(`${API_URL}${url}`, formData, config)
+    .then((res) => res.data)
+    .catch((error): RequestError => {
+      const {
+        response: { status, message, data },
+      } = error;
+      console.log('error', error);
+      throw new UserError(status, data?.message || message, data);
+    });
+
 const fetcher = (url: string, config?: AxiosRequestConfig) =>
   axios.get(url, config).then((res) => res.data);
 

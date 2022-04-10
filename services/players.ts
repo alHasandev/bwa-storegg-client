@@ -1,5 +1,5 @@
 /* eslint-disable implicit-arrow-linebreak */
-import useAPI, { postAPI } from '.';
+import useAPI, { patchAPI, postAPI } from '.';
 
 const route = '/players';
 
@@ -113,6 +113,13 @@ export const useTransactionsHistory = (
 
 export const postCheckout = (data: CheckoutData, token: string) =>
   postAPI(`${route}/checkout`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const updateProfile = (data: FormData, token: string) =>
+  patchAPI(`${route}/profile`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
