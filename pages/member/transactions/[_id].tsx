@@ -1,6 +1,7 @@
 /* eslint-disable operator-linebreak */
 import jwtDecode from 'jwt-decode';
 import type { GetServerSideProps, NextPage } from 'next';
+import Sidebar from '../../../components/organisms/Sidebar';
 import TransactionsDetailContent from '../../../components/organisms/TransactionsDetailContent';
 import { JwtData } from '../../../services/auth';
 import getTransactionDetail from '../../../services/members';
@@ -14,6 +15,7 @@ const TransactionsDetail: NextPage<TransactionsDetailProps> = ({
   transaction,
 }: TransactionsDetailProps) => (
   <section className="transactions-detail overflow-auto">
+    <Sidebar activeMenu="transactions" />
     <TransactionsDetailContent data={transaction} />
   </section>
 );

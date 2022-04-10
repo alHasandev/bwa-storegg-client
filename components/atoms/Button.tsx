@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 interface ButtonProps {
   type: 'Primary' | 'Secondary' | 'Submit';
   text: string;
@@ -24,9 +26,11 @@ function Button(props: Partial<ButtonProps>) {
   }
 
   return (
-    <a className={`btn ${typeClass} text-lg rounded-pill`} href={href} role="button">
-      {text}
-    </a>
+    <Link href={href}>
+      <a role="button" className={`btn ${typeClass} text-lg rounded-pill`}>
+        {text}
+      </a>
+    </Link>
   );
 }
 

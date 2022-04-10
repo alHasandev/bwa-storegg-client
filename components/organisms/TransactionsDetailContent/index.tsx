@@ -1,6 +1,7 @@
 import { IMAGE_URL } from '../../../services';
 import { TTransaction } from '../../../services/players';
 import rupiah from '../../../utilities/Intl/rupiah';
+import Button from '../../atoms/Button';
 import DetailRow from './DetailRow';
 
 type TransactionsDetailContentProps = {
@@ -74,7 +75,7 @@ function TransactionsDetailContent({ data }: TransactionsDetailContentProps) {
                 <DetailRow label="Bank Account Name" value={payment.name} />
                 <DetailRow label="Bank Number" value={payment.noRekening} />
               </div>
-              <div className="d-md-block d-flex flex-column w-100">
+              <div className="d-flex flex-column d-md-block w-100">
                 <a
                   role="button"
                   href={`https://wa.me/6282149259826/?text=Konfirmasi%20order%20dengan%20ID%20${data._id}`}
@@ -85,6 +86,11 @@ function TransactionsDetailContent({ data }: TransactionsDetailContentProps) {
                 >
                   Whatsapp ke Admin
                 </a>
+                <Button
+                  href="/member/transactions"
+                  type="Secondary"
+                  text="Kembali"
+                />
               </div>
             </section>
           </div>
