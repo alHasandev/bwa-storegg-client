@@ -40,6 +40,10 @@ export const postAPI = (
 const fetcher = (url: string, config?: AxiosRequestConfig) =>
   axios.get(url, config).then((res) => res.data);
 
-export default function useAPI(url: string, config?: AxiosRequestConfig) {
+export default function useAPI(
+  url: string | null,
+  config?: AxiosRequestConfig
+) {
+  if (!url) return useSWR(null);
   return useSWR(`${API_URL}${url}`, (_url) => fetcher(_url, config));
 }

@@ -11,7 +11,9 @@ import { TVoucher } from '../../services/players';
 
 const Detail: NextPage = () => {
   const { query, isReady } = useRouter();
-  const { data, error } = useAPI(isReady ? `/players/detail/${query._id}` : '');
+  const { data, error } = useAPI(
+    isReady ? `/players/detail/${query._id}` : null
+  );
 
   if (!data) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
