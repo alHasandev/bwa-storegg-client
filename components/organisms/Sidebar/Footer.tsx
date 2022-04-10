@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 function Footer() {
   return (
     <div className="sidebar-footer pt-73 pe-30">
@@ -23,7 +25,14 @@ function Footer() {
             </mask>
             <g mask="url(#mask0)">
               <circle cx="25" cy="25" r="25" fill="#D7D7F8" />
-              <rect x="8.125" y="15.625" width="33.75" height="38.125" rx="10" fill="#695DE9" />
+              <rect
+                x="8.125"
+                y="15.625"
+                width="33.75"
+                height="38.125"
+                rx="10"
+                fill="#695DE9"
+              />
               <path
                 d="M31.25 28.75L31.25 42.5"
                 stroke="white"
@@ -58,13 +67,14 @@ function Footer() {
             Be The Winner
           </p>
         </div>
-        <a
-          className="btn btn-get-started w-100 fw-medium text-xs text-center text-white rounded-pill"
-          href="#"
-          role="button"
-        >
-          Get Started
-        </a>
+        <Link href="/">
+          <a
+            className="btn btn-get-started w-100 fw-medium text-xs text-center text-white rounded-pill"
+            role="button"
+          >
+            Get Started
+          </a>
+        </Link>
       </div>
     </div>
   );
