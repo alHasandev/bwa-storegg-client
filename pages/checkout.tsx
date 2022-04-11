@@ -64,10 +64,15 @@ const Checkout: NextPage<CheckoutProps> = ({
       bank: bank._id,
     };
 
-    return postCheckout(checkoutData, jwtToken).then(() => {
-      toast('Selamat Anda Topup Berhasil 👍');
-      return router.push('/complete-checkout');
-    });
+    toast
+      .promise(postCheckout(checkoutData, jwtToken), {
+        pending: 'Memproses transaksi... mohon bersabar 🕗',
+        success: 'Selamat Topup anda Berhasil 👍',
+        error: 'Gagal melakukan topup, silahkan coba lagi 🙏',
+      })
+      .then(() => {
+        return router.push('/complete-checkout');
+      });
   };
 
   return (
