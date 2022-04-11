@@ -33,7 +33,6 @@ export const postAPI = (
       const {
         response: { status, message, data },
       } = error;
-      console.log('error', error);
       throw new UserError(status, data?.message || message, data);
     });
 
@@ -49,17 +48,16 @@ export const patchAPI = (
       const {
         response: { status, message, data },
       } = error;
-      console.log('error', error);
       throw new UserError(status, data?.message || message, data);
     });
 
-const fetcher = (url: string, config?: AxiosRequestConfig) =>
-  axios.get(url, config).then((res) => res.data);
+export const getAPI = (url: string, config?: AxiosRequestConfig) =>
+  axios.get(`${API_URL}${url}`, config).then((res) => res.data);
 
 export default function useAPI(
   url: string | null,
   config?: AxiosRequestConfig
 ) {
   if (!url) return useSWR(null);
-  return useSWR(`${API_URL}${url}`, (_url) => fetcher(_url, config));
+  return useSWR([url, config], (_url, _config) => getAPI(_url, _config));
 }
