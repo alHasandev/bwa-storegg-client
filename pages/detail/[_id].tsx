@@ -5,11 +5,13 @@ import Footer from '../../components/organisms/Footer';
 import Navbar from '../../components/organisms/Navbar';
 import TopUpForm from '../../components/organisms/TopUpForm';
 import TopUpItem from '../../components/organisms/TopUpItem';
+import { BASE_PATH, IMAGE_URL } from '../../services';
 import {
   getFeaturedGame,
   getGameDetail,
   TGameDetail,
 } from '../../services/players';
+import SEOHead from '../../components/molecules/SEOHead';
 
 type DetailProps = {
   gameDetail: TGameDetail;
@@ -20,6 +22,15 @@ const Detail: NextPage<DetailProps> = ({ gameDetail }: DetailProps) => {
 
   return (
     <>
+      <SEOHead
+        title={`Store GG - Top Up ${name}`}
+        meta={{
+          description: `Topup & Perkuat akun dan jadilah pemenang, Category: ${category.name}`,
+          type: 'e-commerce',
+          url: `${BASE_PATH}/detail/${_id}`,
+          image: `${IMAGE_URL}/${thumbnail}`,
+        }}
+      />
       <Navbar />
       <section className="detail pt-lg-60 pb-50">
         <div className="container-xxl container-fluid">
