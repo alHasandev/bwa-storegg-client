@@ -30,12 +30,6 @@ function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    console.log('formData', {
-      ...formData,
-      nominal,
-      payment,
-      bank,
-    });
 
     if (!formData.verifyID && !formData.bankAccount) {
       return toast.warning('Silahkan mengisi Verify ID dan bank account');

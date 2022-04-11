@@ -78,7 +78,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       _id: game._id,
     },
   }));
-  console.log('🚀 ~ file: [_id].tsx ~ line 72 ~ paths ~ paths', paths);
 
   return {
     paths,

@@ -37,8 +37,7 @@ function SignInForm() {
         router.push('/');
       }, 3000);
     } catch (error: any) {
-      const { status, message } = error;
-      console.log('erorr response', status, message);
+      const { message } = error;
       toast.error(message || 'Error Login!');
     }
   };
