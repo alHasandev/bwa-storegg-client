@@ -1,4 +1,5 @@
 /* eslint-disable object-curly-newline */
+import Image from 'next/image';
 import Link from 'next/link';
 import rupiah from '../../../utilities/Intl/rupiah';
 
@@ -33,7 +34,7 @@ function TableRow(props: TableRowProps) {
   return (
     <tr className="align-middle">
       <th scope="row">
-        <img
+        <Image
           className="float-start me-3 mb-lg-0 mb-3"
           src={game.img}
           width={80}

@@ -1,6 +1,7 @@
 /* eslint-disable object-curly-newline */
 import Link from 'next/link';
 import cx from 'classnames';
+import Image from 'next/image';
 
 interface MenuItemProps {
   title: string;
@@ -11,7 +12,7 @@ interface MenuItemProps {
 }
 
 function MenuItem(props: Partial<MenuItemProps>) {
-  const { title, iconSrc, active, link = '/', onClick } = props;
+  const { title, iconSrc = '', active, link = '/', onClick } = props;
 
   const classItem = cx({
     item: true,
@@ -21,13 +22,9 @@ function MenuItem(props: Partial<MenuItemProps>) {
 
   return (
     <div className={classItem}>
-      <img
-        src={iconSrc}
-        className="me-3"
-        width={25}
-        height={25}
-        alt="Sidebar icon"
-      />
+      <div className="me-3">
+        <Image src={iconSrc} width={25} height={25} alt="Sidebar icon" />
+      </div>
       <p className="item-title m-0">
         {typeof onClick === 'function' ? (
           <a

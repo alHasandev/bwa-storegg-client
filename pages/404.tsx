@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import Link from 'next/link';
 
 const ErrorNotFound: NextPage = () => (
   <section className="not-found mx-auto pt-145 pb-md-212 pb-100">
@@ -84,7 +85,10 @@ const ErrorNotFound: NextPage = () => (
               d="M244.047 129.64H105.523V252.216H244.047V129.64Z"
               fill="#1C3754"
             />
-            <path d="M235.899 137.95H113.264V243.906H235.899V137.95Z" fill="white" />
+            <path
+              d="M235.899 137.95H113.264V243.906H235.899V137.95Z"
+              fill="white"
+            />
             <path
               d="M149.525 137.95L113.264 217.313V178.255L131.598 137.95H149.525Z"
               fill="#EAEEF9"
@@ -102,8 +106,14 @@ const ErrorNotFound: NextPage = () => (
               d="M270.937 129.64V285.042H361.386V129.64H270.937Z"
               fill="#1C3754"
             />
-            <path d="M353.237 137.95H279.085V208.588H353.237V137.95Z" fill="white" />
-            <path d="M353.237 216.898H279.085V276.732H353.237V216.898Z" fill="white" />
+            <path
+              d="M353.237 137.95H279.085V208.588H353.237V137.95Z"
+              fill="white"
+            />
+            <path
+              d="M353.237 216.898H279.085V276.732H353.237V216.898Z"
+              fill="white"
+            />
             <path
               opacity="0.4"
               d="M191.082 181.995L170.303 167.036C170.303 166.205 170.303 165.374 170.303 164.958C169.895 162.881 167.858 161.219 165.821 161.635C163.377 161.635 161.339 163.712 161.339 166.205C161.339 167.452 161.747 168.698 162.562 169.529L151.154 192.383C150.746 192.798 151.154 193.629 151.561 193.629H151.969C152.376 193.629 152.784 193.214 152.784 193.214L164.192 170.36C164.599 170.36 165.006 170.776 165.414 170.776C166.636 170.776 167.858 169.945 168.673 169.114L189.452 184.072C189.859 184.488 190.674 184.488 191.082 183.657C191.489 182.826 191.489 181.995 191.082 181.995Z"
@@ -121,8 +131,14 @@ const ErrorNotFound: NextPage = () => (
               d="M275.826 214.82C277.401 214.82 278.678 213.518 278.678 211.912C278.678 210.305 277.401 209.003 275.826 209.003C274.251 209.003 272.974 210.305 272.974 211.912C272.974 213.518 274.251 214.82 275.826 214.82Z"
               fill="white"
             />
-            <path d="M360.979 276.732H270.937V288.366H360.979V276.732Z" fill="#EAEEF9" />
-            <path d="M366.276 288.365H264.418V300H366.276V288.365Z" fill="white" />
+            <path
+              d="M360.979 276.732H270.937V288.366H360.979V276.732Z"
+              fill="#EAEEF9"
+            />
+            <path
+              d="M366.276 288.365H264.418V300H366.276V288.365Z"
+              fill="white"
+            />
             <path
               d="M449.796 175.346C458.796 175.346 466.093 167.905 466.093 158.726C466.093 149.546 458.796 142.105 449.796 142.105C440.796 142.105 433.5 149.546 433.5 158.726C433.5 167.905 440.796 175.346 449.796 175.346Z"
               fill="#EAEEF9"
@@ -315,7 +331,9 @@ const ErrorNotFound: NextPage = () => (
         </svg>
       </div>
       <div className="pt-70 pb-md-50 pb-150">
-        <h2 className="text-4xl fw-bold text-center color-palette-1 mb-10">Oops! Not Found</h2>
+        <h2 className="text-4xl fw-bold text-center color-palette-1 mb-10">
+          Oops! Not Found
+        </h2>
         <p className="text-lg text-center color-palette-1 m-0">
           Halaman yang anda kunjungi sudah
           <br className="d-sm-block d-none" />
@@ -323,13 +341,14 @@ const ErrorNotFound: NextPage = () => (
         </p>
       </div>
       <div className="button-group d-flex flex-column mx-auto">
-        <a
-          className="btn btn-homepage fw-medium text-lg text-white rounded-pill"
-          href="/"
-          role="button"
-        >
-          Homepage
-        </a>
+        <Link href="/">
+          <a
+            className="btn btn-homepage fw-medium text-lg text-white rounded-pill"
+            role="button"
+          >
+            Homepage
+          </a>
+        </Link>
       </div>
     </div>
   </section>

@@ -1,4 +1,5 @@
 /* eslint-disable object-curly-newline */
+import Image from 'next/image';
 import rupiah from '../../../utilities/Intl/rupiah';
 import { TransactionRecordProps } from './types';
 
@@ -19,13 +20,9 @@ function TransactionRecord(props: TransactionRecordProps) {
   return (
     <tr className="align-middle">
       <th scope="row">
-        <img
-          className="float-start me-3 mb-lg-0 mb-3"
-          src={game.img}
-          width={80}
-          height={60}
-          alt="game thumb"
-        />
+        <div className="float-start me-3 mb-lg-0 mb-3">
+          <Image src={game.img} width={80} height={60} alt="game thumb" />
+        </div>
         <div className="game-title-header">
           <p className="game-title fw-medium text-start color-palette-1 m-0">
             {game.title}

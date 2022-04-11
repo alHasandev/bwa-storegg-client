@@ -33,7 +33,10 @@ function TransactionsContent({ jwtToken }: TransactionsContentProps) {
   const { asPath, isReady } = useRouter();
 
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const { data, error } = useTransactionsHistory(jwtToken, selectedTag);
+  const { data, error } = useTransactionsHistory<TransactionHistory>(
+    jwtToken,
+    selectedTag
+  );
 
   useEffect(() => {
     if (isReady) {
@@ -46,10 +49,10 @@ function TransactionsContent({ jwtToken }: TransactionsContentProps) {
     }
   }, [asPath, isReady]);
 
-  if (!data && !error) return <div>Loading...</div>;
+  if (!data) return <div>Loading...</div>;
   if (error) return <div>Error!, hubungi admin</div>;
 
-  const { data: transactions, totalValue }: TransactionHistory = data;
+  const { data: transactions, totalValue } = data;
 
   return (
     <main className="main-wrapper">

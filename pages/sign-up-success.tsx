@@ -20,12 +20,12 @@ const SignUpSuccess: NextPage = () => (
       </div>
       <div className="button-group d-flex flex-column mx-auto">
         <Link href="/member">
-          <button
+          <a
             className="btn btn-top-up fw-medium text-lg text-white rounded-pill"
             type="button"
           >
             Top Up
-          </button>
+          </a>
         </Link>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import SignInForm from '../components/organisms/SignInForm';
 import SEOHead from '../components/molecules/SEOHead';
@@ -24,7 +25,7 @@ const SignIn: NextPage = () => (
               <div className="pb-50">
                 <Link href="/">
                   <a className="navbar-brand">
-                    <img
+                    <Image
                       src="/icon/logo.svg"
                       width={60}
                       height={60}
@@ -38,10 +39,10 @@ const SignIn: NextPage = () => (
           </div>
         </div>
         <div className="col-xxl-7 col-lg-6 bg-blue text-center pt-lg-145 pb-lg-145 d-lg-block d-none">
-          <img
+          <Image
             src="/img/Header-9.png"
-            width="502"
-            height="391.21"
+            width={502}
+            height={391.21}
             className="img-fluid pb-50"
             alt=""
           />

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { IMAGE_URL } from '../../../services';
 
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -13,9 +14,10 @@ function CheckoutItem({ gameName, category, thumbnail }: CheckoutItemProps) {
       <div className="game-checkout d-flex flex-row align-items-center pt-md-50 pb-md-50 pt-30 pb-30">
         <div className="pe-4">
           <div className="cropped">
-            <img
+            <Image
               src={`${IMAGE_URL}/${thumbnail}`}
               className="img-fluid"
+              layout="responsive"
               alt=""
             />
           </div>

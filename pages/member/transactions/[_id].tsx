@@ -1,6 +1,6 @@
 /* eslint-disable operator-linebreak */
 import jwtDecode from 'jwt-decode';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { NextPage } from 'next';
 import Sidebar from '../../../components/organisms/Sidebar';
 import TransactionsDetailContent from '../../../components/organisms/TransactionsDetailContent';
 import { JwtData } from '../../../services/auth';
@@ -22,10 +22,21 @@ const TransactionsDetail: NextPage<TransactionsDetailProps> = ({
 
 export default TransactionsDetail;
 
-export const getServerSideProps: GetServerSideProps = async ({
+type GetServerSidePropsParams = {
+  req: {
+    cookies: {
+      token: string;
+    };
+  };
+  params: {
+    _id: string;
+  };
+};
+
+export const getServerSideProps = async ({
   req,
   params,
-}) => {
+}: GetServerSidePropsParams) => {
   try {
     const { token } = req.cookies;
 
@@ -44,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: { transaction },
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       redirect: {
         destination: '/sign-in',

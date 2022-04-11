@@ -54,11 +54,7 @@ export type TPayment = {
   banks: TBank[];
 };
 
-export type TTotalSpent = {
-  Mobile: number;
-  Desktop: number;
-  Other: number;
-};
+export type TTotalSpent = { [s: string]: number };
 
 export type TTransaction = {
   _id: string;
@@ -105,9 +101,9 @@ export type GetFeaturedGame = () => Promise<GetFeaturedGameResult>;
 // eslint-disable-next-line no-unused-vars
 export type GetGameDetail = (voucherID: string) => Promise<GetGameDetailResult>;
 
-export const useCategories = () => useAPI(`${route}/categories`);
+export const useCategories = <T>() => useAPI<T>(`${route}/categories`);
 
-export const useFeaturedGame = () => useAPI(`${route}/landing`);
+export const useFeaturedGame = <T>() => useAPI<T>(`${route}/landing`);
 
 export const getFeaturedGame: GetFeaturedGame = () =>
   getAPI(`${route}/landing`);
@@ -115,19 +111,19 @@ export const getFeaturedGame: GetFeaturedGame = () =>
 export const getGameDetail: GetGameDetail = (voucherID: string) =>
   getAPI(`${route}/detail/${voucherID}`);
 
-export const useDashboard = (token: string) =>
-  useAPI(`${route}/dashboard`, {
+export const useDashboard = <T>(token: string) =>
+  useAPI<T>(`${route}/dashboard`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-export const useTransactionsHistory = (
+export const useTransactionsHistory = <T>(
   token: string,
   status?: string | null
 ) => {
   const queryURL = status ? `?status=${status}` : '';
-  return useAPI(`${route}/history${queryURL}`, {
+  return useAPI<T>(`${route}/history${queryURL}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -141,8 +137,8 @@ export const postCheckout = (data: CheckoutData, token: string) =>
     },
   });
 
-export const updateProfile = (data: FormData, token: string) =>
-  patchAPI(`${route}/profile`, data, {
+export const updateProfile = <T>(data: FormData, token: string) =>
+  patchAPI<T>(`${route}/profile`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

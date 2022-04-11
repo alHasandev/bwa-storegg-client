@@ -4,9 +4,13 @@
     "es6": true
   },
   "extends": [
+    "eslint:recommended",
+    "next",
     "plugin:react/recommended",
     "airbnb",
-    "plugin:react/jsx-runtime"
+    "plugin:react/jsx-runtime",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -14,6 +18,8 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": ".",
     "ecmaFeatures": {
       "jsx": true
     },
@@ -22,7 +28,8 @@
   },
   "plugins": [
     "react",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "import"
   ],
   "rules": {
     "comma-dangle": "off",
@@ -53,6 +60,7 @@
     "jsx-a11y/anchor-is-valid": "off",
     "linebreak-style": "off",
     "no-underscore-dangle": "off",
+    "@next/next/no-document-import-in-page": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -62,7 +70,8 @@
         "ts": "never",
         "tsx": "never"
       }
-    ]
+    ],
+    "import/no-unresolved": "error"
   },
   "settings": {
     "import/extensions": [
@@ -85,6 +94,10 @@
           ".ts",
           ".tsx"
         ]
+      },
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
       }
     }
   }

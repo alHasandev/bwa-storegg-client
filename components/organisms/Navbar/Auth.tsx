@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import Link from 'next/link';
@@ -13,11 +14,11 @@ function Auth() {
 
   const logout = useLogout('/');
 
-  const logoutUser = () => {
-    logout().then(() => {
-      setIsLogin(false);
-      setUser(null);
-    });
+  const logoutUser = async () => {
+    await logout();
+
+    setIsLogin(false);
+    setUser(null);
   };
 
   useEffect(() => {
@@ -48,13 +49,13 @@ function Auth() {
         <div>
           <a
             className="dropdown-toggle ms-lg-40"
-            href="/#"
+            href="#"
             role="button"
             id="dropdownMenuLink"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <img
+            <Image
               src={`${IMAGE_URL}/${user.avatar}`}
               className="rounded-circle"
               width="40"

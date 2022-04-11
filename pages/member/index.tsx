@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode';
-import { GetServerSideProps } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import OverviewContent from '../../components/organisms/OverviewContent';
 import Sidebar from '../../components/organisms/Sidebar';
 import { JwtData } from '../../services/auth';
@@ -19,7 +19,7 @@ function MemberOverview({ jwtToken }: MemberOverviewProps) {
 
 export default MemberOverview;
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+export const getServerSideProps = ({ req }: GetServerSidePropsContext) => {
   try {
     const { token } = req.cookies;
 

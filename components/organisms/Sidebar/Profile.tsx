@@ -24,7 +24,7 @@ function Profile() {
 
       setUser(player);
     } catch (error) {
-      console.error('Error Sidebar Profile', error);
+      throw new Error('Error Sidebar Profile');
     }
 
     // if(!!user)

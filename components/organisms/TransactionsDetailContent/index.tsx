@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { IMAGE_URL } from '../../../services';
 import { TTransaction } from '../../../services/players';
 import rupiah from '../../../utilities/Intl/rupiah';
@@ -25,7 +26,7 @@ function TransactionsDetailContent({ data }: TransactionsDetailContentProps) {
                 <div className="game-checkout d-flex flex-row align-items-center">
                   <div className="pe-4">
                     <div className="cropped">
-                      <img
+                      <Image
                         src={`${IMAGE_URL}/${game.thumbnail}`}
                         width="200"
                         height="130"

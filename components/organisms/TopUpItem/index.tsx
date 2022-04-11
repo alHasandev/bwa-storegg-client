@@ -1,4 +1,5 @@
 /* eslint-disable object-curly-newline */
+import Image from 'next/image';
 import { IMAGE_URL } from '../../../services';
 import { TVoucher } from '../../../services/players';
 
@@ -30,7 +31,7 @@ function TopUpItem(props: TopUpItemProps) {
   return (
     <div className="row align-items-center">
       <div className="col-md-12 col-4">
-        <img
+        <Image
           src={`${IMAGE_URL}/${thumbnail}`}
           width="280"
           height="380"

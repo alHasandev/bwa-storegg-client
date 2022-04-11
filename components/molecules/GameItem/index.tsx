@@ -17,7 +17,7 @@ function GameItem(props: GameItemProps) {
       <Link href={`/detail/${id}`}>
         <a>
           <div className="blur-sharp">
-            <img
+            <Image
               src={imgSrc}
               className="thumbnail"
               width={205}

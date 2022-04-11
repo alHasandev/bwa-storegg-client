@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
+import Image from 'next/image';
 import { TBank } from '../../../services/players';
 
 type PaymentItemProps = {
@@ -23,7 +26,7 @@ const PaymentItem = ({
     <div className="detail-card">
       <div className="d-flex justify-content-between">
         <p className="text-3xl color-palette-1 fw-medium m-0">{type}</p>
-        <img
+        <Image
           src="/icon/check.svg"
           className="icon-check"
           width={20}

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import { ChangeEvent } from 'react';
+import Image from 'next/image';
 import rupiah from '../../../utilities/Intl/rupiah';
 
 /* eslint-disable object-curly-newline */
@@ -33,7 +35,7 @@ const Nominal = ({
           &nbsp;
           {coinName}
         </p>
-        <img
+        <Image
           src="/icon/check.svg"
           className="icon-check"
           width={20}

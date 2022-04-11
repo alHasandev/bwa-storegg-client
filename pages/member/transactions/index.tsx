@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSidePropsContext, NextPage } from 'next';
 import Sidebar from '../../../components/organisms/Sidebar';
 import TransactionsContent from '../../../components/organisms/TransactionsContent';
 import { JwtData } from '../../../services/auth';
@@ -19,7 +19,7 @@ const Transactions: NextPage<TransactionsProps> = ({
 
 export default Transactions;
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+export const getServerSideProps = ({ req }: GetServerSidePropsContext) => {
   try {
     const { token } = req.cookies;
 

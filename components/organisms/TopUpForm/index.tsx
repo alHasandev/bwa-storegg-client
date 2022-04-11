@@ -20,7 +20,10 @@ type TopUpFormProps = {
 
 function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
   const router = useRouter();
-  const { formData, changeFormValue } = useFormData({
+  const { formData, changeFormValue } = useFormData<{
+    verifyID: string;
+    bankAccount: string;
+  }>({
     verifyID: '',
     bankAccount: '',
   });

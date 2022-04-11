@@ -1,3 +1,7 @@
+export type RequestSuccess<T = Record<string, unknown>> = {
+  data: T;
+};
+
 export type ValidatorError = {
   kind: string;
   message: string;
@@ -8,7 +12,10 @@ export type ValidatorError = {
 
 export type RequestError = {
   status: number;
-  data: any;
+  data: {
+    message: string;
+    fields: ArrayLike<ValidatorError> | { [s: string]: ValidatorError };
+  };
   message: string;
   type: 'error' | 'warning';
 };

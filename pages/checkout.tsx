@@ -1,6 +1,7 @@
 /* eslint-disable object-curly-newline */
 import jwtDecode from 'jwt-decode';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSidePropsContext, NextPage } from 'next';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -65,7 +66,7 @@ const Checkout: NextPage<CheckoutProps> = ({
 
     return postCheckout(checkoutData, jwtToken).then(() => {
       toast('Selamat Anda Topup Berhasil 👍');
-      router.push('/complete-checkout');
+      return router.push('/complete-checkout');
     });
   };
 
@@ -73,9 +74,7 @@ const Checkout: NextPage<CheckoutProps> = ({
     <section className="checkout mx-auto pt-md-100 pb-md-145 pt-30 pb-30">
       <form className="container-fluid" onSubmit={onSubmit}>
         <div className="logo text-md-center text-start pb-50">
-          <a className="" href="/#">
-            <img src="/icon/logo.svg" width={60} height={60} alt="logo" />
-          </a>
+          <Image src="/icon/logo.svg" width={60} height={60} alt="logo" />
         </div>
         <div className="title-text pt-md-50 pt-0">
           <h2 className="text-4xl fw-bold color-palette-1 mb-10">Checkout</h2>
@@ -106,7 +105,7 @@ const Checkout: NextPage<CheckoutProps> = ({
 
 export default Checkout;
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+export const getServerSideProps = ({ req }: GetServerSidePropsContext) => {
   try {
     const { token } = req.cookies;
 

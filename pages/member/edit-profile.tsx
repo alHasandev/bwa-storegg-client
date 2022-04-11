@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
-import { GetServerSideProps } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
 import { FormEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -17,9 +18,20 @@ type EditProfileProps = {
   jwtToken: string;
 };
 
+type UpdateProfileResponse = {
+  data: {
+    token: string;
+  };
+};
+
 type AvatarImage = {
   src: string;
   file: File | null;
+};
+
+type InputData = {
+  name: string;
+  phoneNumber: string;
 };
 
 function EditProfile({ user, jwtToken }: EditProfileProps) {
@@ -31,7 +43,7 @@ function EditProfile({ user, jwtToken }: EditProfileProps) {
   const {
     formData: { name, phoneNumber },
     changeFormValue,
-  } = useFormData({
+  } = useFormData<InputData>({
     name: user.name,
     phoneNumber: user.phoneNumber,
   });
@@ -44,21 +56,21 @@ function EditProfile({ user, jwtToken }: EditProfileProps) {
     if (avatar.file) formData.append('avatar', avatar.file);
 
     toast
-      .promise(updateProfile(formData, jwtToken), {
+      .promise(updateProfile<UpdateProfileResponse>(formData, jwtToken), {
         pending: 'Menyimpan Perubahan...',
         success: 'Berhasil mengupdate profile',
         error: 'Gagal mengupdate profile',
       })
-      .then(({ data }) => {
+      .then(({ data }: UpdateProfileResponse) => {
         // Save new token
         const tokenBase64 = btoa(data.token);
-        Cookies.set('token', tokenBase64, { expires: 1 });
+        return Cookies.set('token', tokenBase64, { expires: 1 });
       });
   };
 
   useEffect(() => {
     setAvatar((img) => ({ ...img, src: `${IMAGE_URL}/${user.avatar}` }));
-  }, []);
+  }, [user.avatar]);
 
   return (
     <section className="edit-profile overflow-auto">
@@ -140,7 +152,7 @@ function EditProfile({ user, jwtToken }: EditProfileProps) {
 
 export default EditProfile;
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+export const getServerSideProps = ({ req }: GetServerSidePropsContext) => {
   try {
     const { token } = req.cookies;
 

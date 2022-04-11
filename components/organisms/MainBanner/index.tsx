@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import Button from '../../atoms/Button';
 import Illustration from './Illustration';
 
@@ -9,16 +10,11 @@ function MainBanner() {
           <div className="col-lg-6 col-12 my-auto">
             <p className="text-support text-lg color-palette-2">Halo gamers,</p>
             <h1 className="header-title color-palette-1 fw-bold">
-              Topup & Get
-              {' '}
-              <span className="d-sm-inline d-none">a</span>
+              Topup & Get <span className="d-sm-inline d-none">a</span>
               <span className="d-sm-none d-inline">a</span>
-              <span className="underline-blue"> New</span>
-              {' '}
+              <span className="underline-blue"> New</span>{' '}
               <br className="d-sm-block d-none" />
-              <span className="underline-blue">Experience</span>
-              {' '}
-              in Gaming
+              <span className="underline-blue">Experience</span> in Gaming
             </h1>
             <p className="mt-30 mb-40 text-lg color-palette-1">
               Kami menyediakan jutaan cara untuk membantu

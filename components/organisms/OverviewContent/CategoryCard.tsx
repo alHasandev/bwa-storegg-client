@@ -23,7 +23,9 @@ function CategoryCard(props: CategoryCardProps) {
         </div>
         <div>
           <p className="text-sm color-palette-2 mb-1">Total Spent</p>
-          <p className="text-2xl color-palette-1 fw-medium m-0">{rupiah(nominal)}</p>
+          <p className="text-2xl color-palette-1 fw-medium m-0">
+            {rupiah(nominal)}
+          </p>
         </div>
       </div>
     </div>

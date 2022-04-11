@@ -5,7 +5,7 @@ import { TVoucher, useFeaturedGame } from '../../../services/players';
 import GameItem from '../../molecules/GameItem';
 
 function FeaturedGame() {
-  const { data, error } = useFeaturedGame();
+  const { data, error } = useFeaturedGame<{ data: TVoucher[] }>();
 
   if (!data) return <div>Loading...</div>;
   if (error) return <div>Error!</div>;

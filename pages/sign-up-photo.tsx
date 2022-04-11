@@ -26,7 +26,7 @@ type SignUpData = {
   phoneNumber: string;
 };
 
-const throttleToastError = throttle((message) => {
+const throttleToastError = throttle((message: string) => {
   toast.error(message);
 }, 1000);
 
@@ -35,7 +35,7 @@ const SignUpPhoto: NextPage = () => {
   const [favoriteGame, setFavoriteGame] = useState('');
   const [previewImage, setPreviewImage] = useState<string>('/icon/upload.svg');
   const [imageFile, setImageFile] = useState<Blob | string>('');
-  const { data, error } = useCategories();
+  const { data, error } = useCategories<{ data: TCategory[] }>();
   const { localValue, saveLocalValue } =
     useLocalStorage<SignUpData>('signup-data');
 
@@ -52,7 +52,7 @@ const SignUpPhoto: NextPage = () => {
     formData.append('phoneNumber', localValue.phoneNumber);
 
     // Set favorite game category
-    formData.append('favorite', favoriteGame || data.data?.[0]._id);
+    formData.append('favorite', favoriteGame || data.data[0]._id);
 
     authSignUp(formData)
       .then(() => {
@@ -69,24 +69,21 @@ const SignUpPhoto: NextPage = () => {
           })
         );
 
-        setTimeout(() => {
-          router.push('/sign-up-success');
-        }, 3000);
+        return router.push('/sign-up-success');
       })
-      .catch(({ status, data: dataFields }: RequestError) => {
+      .catch(async ({ status, data: dataFields }: RequestError) => {
         if (status !== 422) return toast(`${status}: Sign Up Error!`);
 
         const errorFields: ValidatorError[] = Object.values(dataFields.fields);
 
-        setTimeout(() => {
-          router.push('/sign-up');
-        }, 5000);
-
-        return errorFields.map((field) => {
+        const alerts = errorFields.map((field) => {
           const alertMessage = `Mohon maaf ${field.path} ${field.message} 🙏`;
           throttleToastError(alertMessage);
           return alertMessage;
         });
+
+        await router.push('/sign-up');
+        return alerts;
       });
   };
   const chooseFavoriteGame = (_id: string) => {
@@ -166,7 +163,7 @@ const SignUpPhoto: NextPage = () => {
               </button>
               <a
                 className="btn btn-tnc text-lg color-palette-1 text-decoration-underline pt-15"
-                href="/#"
+                href="#"
                 role="button"
               >
                 Terms & Conditions

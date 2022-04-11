@@ -28,12 +28,12 @@ type OverviewContentProps = {
 };
 
 function OverviewContent({ jwtToken }: OverviewContentProps) {
-  const { data, error } = useDashboard(jwtToken);
+  const { data, error } = useDashboard<TDashboard>(jwtToken);
 
-  if (!data && !error) return <div>Loading...</div>;
+  if (!data) return <div>Loading...</div>;
   if (error) return <div>Error!, hubungi admin</div>;
 
-  const { transactions }: TDashboard = data;
+  const { totalSpent, transactions } = data;
 
   return (
     <main className="main-wrapper">
@@ -45,12 +45,12 @@ function OverviewContent({ jwtToken }: OverviewContentProps) {
           </p>
           <div className="main-content">
             <div className="row">
-              {Object.keys(data.totalSpent).map((category: string) => (
+              {Object.keys(totalSpent).map((category) => (
                 <CategoryCard
                   key={category}
                   title={['Game', category]}
                   iconSrc={getCategoryIcon(category)}
-                  nominal={data.totalSpent[category]}
+                  nominal={totalSpent[category]}
                 />
               ))}
             </div>

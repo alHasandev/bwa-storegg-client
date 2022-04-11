@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FormEvent } from 'react';
@@ -26,18 +27,19 @@ function SignInForm() {
         throw new UserError(400, 'Email dan Password wajib di isi!');
       }
 
-      const { data } = await authSignIn({ email, password });
+      const { data } = await toast.promise(authSignIn({ email, password }), {
+        pending: 'Autentikasi login...',
+        success: 'Berhasil login',
+        error: 'Gagal login, silahkan coba lagi',
+      });
       // Process jwt token
       // const buf = Buffer.from(data.token, 'base64');
       const tokenBase64 = btoa(data.token);
       Cookies.set('token', tokenBase64, { expires: 1 });
-      toast.success('Berhasil login');
-      setTimeout(() => {
-        router.push('/');
-      }, 3000);
+
+      return router.push('/');
     } catch (error: any) {
-      const { message } = error;
-      toast.error(message || 'Error Login!');
+      return toast.error('Error Login!');
     }
   };
 

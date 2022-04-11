@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import SignUpForm from '../components/organisms/SignUpForm';
 
@@ -9,7 +10,7 @@ const SignUp: NextPage = () => (
         <div className="pb-50">
           <Link href="/">
             <a className="navbar-brand">
-              <img src="/icon/logo.svg" width={60} height={60} alt="logo" />
+              <Image src="/icon/logo.svg" width={60} height={60} alt="logo" />
             </a>
           </Link>
         </div>
