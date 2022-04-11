@@ -22,7 +22,6 @@ function SignInForm() {
   const submitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      console.table({ email, password });
       if (!email && !password) {
         throw new UserError(400, 'Email dan Password wajib di isi!');
       }
