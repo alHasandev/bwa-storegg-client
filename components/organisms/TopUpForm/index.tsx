@@ -60,7 +60,7 @@ function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
   };
 
   return (
-    <form action="./checkout.html" method="POST" onSubmit={onSubmit}>
+    <form method="POST" onSubmit={onSubmit}>
       <div className="pt-md-50 pt-30">
         <div className="">
           <label
