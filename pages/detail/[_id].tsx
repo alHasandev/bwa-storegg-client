@@ -1,24 +1,22 @@
 /* eslint-disable object-curly-newline */
-import type { NextPage } from 'next';
-import { useRouter } from 'next/dist/client/router';
+import type { GetStaticPaths, NextPage } from 'next';
 
 import Footer from '../../components/organisms/Footer';
 import Navbar from '../../components/organisms/Navbar';
 import TopUpForm from '../../components/organisms/TopUpForm';
 import TopUpItem from '../../components/organisms/TopUpItem';
-import useAPI from '../../services';
-import { TVoucher } from '../../services/players';
+import {
+  getFeaturedGame,
+  getGameDetail,
+  TGameDetail,
+} from '../../services/players';
 
-const Detail: NextPage = () => {
-  const { query, isReady } = useRouter();
-  const { data, error } = useAPI(
-    isReady ? `/players/detail/${query._id}` : null
-  );
+type DetailProps = {
+  gameDetail: TGameDetail;
+};
 
-  if (!data) return <div>Loading...</div>;
-  if (error) return <div>Error</div>;
-
-  const { _id, name, thumbnail, category }: TVoucher = data?.data;
+const Detail: NextPage<DetailProps> = ({ gameDetail }: DetailProps) => {
+  const { _id, name, thumbnail, category, nominals, payments } = gameDetail;
 
   return (
     <>
@@ -35,11 +33,11 @@ const Detail: NextPage = () => {
           </div>
           <div className="row">
             <div className="col-xl-3 col-lg-4 col-md-5 pb-30 pb-md-0 pe-md-25 text-md-start">
-              <TopUpItem data={data.data} type="mobile" />
+              <TopUpItem data={gameDetail} type="mobile" />
             </div>
             <div className="col-xl-9 col-lg-8 col-md-7 ps-md-25">
               {/* <!-- Desktop: Game title --> */}
-              <TopUpItem data={data.data} type="desktop" />
+              <TopUpItem data={gameDetail} type="desktop" />
               <hr />
               <TopUpForm
                 voucher={{
@@ -48,8 +46,8 @@ const Detail: NextPage = () => {
                   thumbnail,
                   category,
                 }}
-                nominals={data.data?.nominals}
-                payments={data.data?.payments}
+                nominals={nominals}
+                payments={payments}
               />
             </div>
           </div>
@@ -61,3 +59,41 @@ const Detail: NextPage = () => {
 };
 
 export default Detail;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const { data: featuredGames } = await getFeaturedGame();
+  const paths = featuredGames.map((game) => ({
+    params: {
+      _id: game._id,
+    },
+  }));
+  console.log('🚀 ~ file: [_id].tsx ~ line 72 ~ paths ~ paths', paths);
+
+  return {
+    paths,
+    fallback: false, // true / 'blocking'
+    /**
+     * false => only pages that are generated during next build will be visible.
+     * true => revalidate page of paths on request and re-build static path if page not exist
+     * true: pages that don't exist => Nextjs will return error and must be handled (notFound: true)
+     * 'blocking' => Like (true) but browser will blocking (hang) until requested page complete
+     * Link: https://stackoverflow.com/questions/67787456/what-is-the-difference-between-fallback-false-vs-true-vs-blocking-of-getstaticpa
+     */
+  };
+};
+
+interface GetStaticPropsParams {
+  params: {
+    _id: string;
+  };
+}
+
+export const getStaticProps = async ({ params }: GetStaticPropsParams) => {
+  const { data: gameDetail } = await getGameDetail(params._id);
+
+  return {
+    props: {
+      gameDetail,
+    },
+  };
+};

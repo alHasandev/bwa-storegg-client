@@ -15,11 +15,7 @@ import PaymentItem from '../../molecules/PaymentItem';
 type TopUpFormProps = {
   voucher: TVoucher;
   nominals: TNominal[];
-  payments: {
-    type: string;
-    _id: string;
-    banks: TBank[];
-  }[];
+  payments: TPayment[];
 };
 
 function TopUpForm({ nominals, payments, voucher }: TopUpFormProps) {
