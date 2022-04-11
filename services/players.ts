@@ -1,5 +1,5 @@
 /* eslint-disable implicit-arrow-linebreak */
-import useAPI, { patchAPI, postAPI } from '.';
+import useAPI, { getAPI, patchAPI, postAPI } from '.';
 
 const route = '/players';
 
@@ -51,7 +51,7 @@ export type TBank = {
 export type TPayment = {
   _id: string;
   type: string;
-  banks: TBank[] | string;
+  banks: TBank[];
 };
 
 export type TTotalSpent = {
@@ -88,9 +88,32 @@ export type TDashboard = {
   transactions: TTransaction[];
 };
 
+export type TGameDetail = {
+  nominals: TNominal[];
+  payments: TPayment[];
+} & TVoucher;
+
+export type GetFeaturedGameResult = {
+  data: TVoucher[];
+};
+
+export type GetGameDetailResult = {
+  data: TGameDetail;
+};
+
+export type GetFeaturedGame = () => Promise<GetFeaturedGameResult>;
+// eslint-disable-next-line no-unused-vars
+export type GetGameDetail = (voucherID: string) => Promise<GetGameDetailResult>;
+
 export const useCategories = () => useAPI(`${route}/categories`);
 
 export const useFeaturedGame = () => useAPI(`${route}/landing`);
+
+export const getFeaturedGame: GetFeaturedGame = () =>
+  getAPI(`${route}/landing`);
+
+export const getGameDetail: GetGameDetail = (voucherID: string) =>
+  getAPI(`${route}/detail/${voucherID}`);
 
 export const useDashboard = (token: string) =>
   useAPI(`${route}/dashboard`, {
