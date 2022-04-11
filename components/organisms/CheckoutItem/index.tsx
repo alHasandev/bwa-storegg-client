@@ -17,7 +17,8 @@ function CheckoutItem({ gameName, category, thumbnail }: CheckoutItemProps) {
             <Image
               src={`${IMAGE_URL}/${thumbnail}`}
               className="img-fluid"
-              layout="responsive"
+              layout="fill"
+              objectFit="cover"
               alt=""
             />
           </div>
